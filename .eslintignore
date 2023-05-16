@@ -1,2 +1,5 @@
 vendor
-eslint.config.js
+*.css
+.eslintrc.json
+vite.config.js
+tailwind.config.js
