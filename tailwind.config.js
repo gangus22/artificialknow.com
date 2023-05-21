@@ -1,4 +1,7 @@
-/** @type {import('tailwindcss').Config} */
+const plugin = require("tailwindcss/plugin");
+/** @type {DefaultColors} */
+const colors = require("tailwindcss/colors");
+
 module.exports = {
     content: [
         "./resources/**/*.blade.php",
@@ -6,7 +9,16 @@ module.exports = {
         "./resources/**/*.tsx",
     ],
     theme: {
+        colors: {
+            primary: colors.emerald,
+            secondary: colors.indigo,
+            cyan: colors.cyan,
+        },
+        fontFamily: {
+            sans: ["Sora", "sans-serif"],
+            serif: ["Graphik", "serif"],
+        },
         extend: {},
     },
-    plugins: [],
+    plugins: [require("@tailwindcss/forms")],
 };
