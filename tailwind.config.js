@@ -13,6 +13,7 @@ module.exports = {
             primary: colors.emerald,
             secondary: colors.indigo,
             cyan: colors.cyan,
+            white: colors.white,
         },
         fontFamily: {
             sans: ["Sora", "sans-serif"],
