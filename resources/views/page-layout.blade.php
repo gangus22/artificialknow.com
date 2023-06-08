@@ -1,9 +1,9 @@
 @extends('app')
 
 @section('bodyContent')
-    <div class="h-full h-screen w-full bg-gradient-to-br bg-no-repeat from-secondary-50 via-70% via-primary-200 to-secondary-100">
-        <div class="mx-auto my-5 w-full rounded-lg border border-slate-700 w-[95%]">
-            navbar placeholder
+    <div class="h-full w-full py-5 main-page-bg-gradient">
+        <div class="mx-auto mb-5 rounded-lg border border-slate-700 w-[95%]">
+            <x-layout-navbar />
         </div>
         <div class="container mx-auto rounded-lg bg-white/30 backdrop-blur-sm">
             <div class="flex flex-col items-center gap-y-4 p-5">
@@ -21,7 +21,7 @@
                 </div>
             </div>
         </div>
-        <div class="mx-auto my-5 w-full h-screen rounded-lg border border-slate-700 ">
+        <div class="mx-auto my-5 h-screen w-full rounded-lg border border-slate-700">
             footer placeholder
         </div>
     </div>

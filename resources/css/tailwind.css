@@ -3,3 +3,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .main-page-bg-gradient {
+        @apply bg-gradient-to-br bg-no-repeat from-secondary-50 via-70% via-primary-200 to-secondary-100
+    }
+}
