@@ -1,12 +1,24 @@
 import "./bootstrap";
 import { createRoot } from "react-dom/client";
 import React from "react";
-import { createInertiaApp } from "@inertiajs/react";
-import { inertiaComponentMap } from "./inertiaComponentMap";
+import { reactComponentMap } from "./reactComponentMap";
 
-createInertiaApp({
-    resolve: async (name) => inertiaComponentMap[name],
-    setup({ el, App, props }) {
-        createRoot(el).render(<App {...props} />);
-    },
-}).then();
+const reactComponentPrefix = "react-from-blade-";
+document
+    .querySelectorAll(`*[class^=${reactComponentPrefix}]`)
+    .forEach(async (element) => {
+        const componentName = element.className.split(reactComponentPrefix)[1];
+        const Component = await reactComponentMap[componentName];
+        createRoot(element).render(<Component />);
+    });
+
+// TODO: implement SSR
+/*
+ * createInertiaApp({
+ *     resolve: async (name) => reactComponentMap[name],
+ *     setup({ el, App, props }) {
+ *         console.log(el);
+ *         createRoot(el).render(<App {...props} />);
+ *     },
+ * }).then();
+ */

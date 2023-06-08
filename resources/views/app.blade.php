@@ -1,6 +1,5 @@
 @php
     //TODO: remove robots noindex when production ready
-    $isInertiaRequest ??= false;
 @endphp
 
 <!DOCTYPE html>
@@ -15,15 +14,11 @@
         @vite('resources/css/tailwind.css')
         @vite('resources/ts/app.tsx')
 
-        @if($isInertiaRequest)
-            @inertiaHead
-        @endif
+        @php($page ??= [])
+        @inertiaHead
     </head>
     <body>
-        @if($isInertiaRequest)
-            @inertia
-        @else
-            @yield('bodyContent')
-        @endif
+        @inertia
+        @yield('bodyContent')
     </body>
 </html>
