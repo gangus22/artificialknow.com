@@ -12,6 +12,7 @@ module.exports = {
         colors: {
             primary: colors.emerald,
             secondary: colors.indigo,
+            slate: colors.slate,
             cyan: colors.cyan,
             white: colors.white,
         },
