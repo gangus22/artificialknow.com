@@ -1,1 +1,1 @@
-@extends('app', ['isInertiaRequest' => true])
+@extends('app')

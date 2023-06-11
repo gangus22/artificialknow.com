@@ -4,6 +4,8 @@ import React from "react";
 import { reactComponentMap } from "./reactComponentMap";
 
 const reactComponentPrefix = "react-from-blade-";
+
+// TODO: encode and pass down props
 document
     .querySelectorAll(`*[class^=${reactComponentPrefix}]`)
     .forEach(async (element) => {

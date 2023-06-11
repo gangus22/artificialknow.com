@@ -10,15 +10,6 @@
                 <div class="rounded-lg border border-slate-700 p-4 bg-primary-400">
                     I'm nice and green, because TailwindCSS works now.
                 </div>
-                <div id="react-root"></div>
-                <div class="rounded-lg border border-slate-700 bg-amber-400 p-4">
-                    @php
-                        use \App\Models\Example;
-                        /** @var Example $exampleModel */
-                        $exampleModel = Example::all()->first();
-                        echo $exampleModel->test_data;
-                    @endphp
-                </div>
             </div>
         </div>
         <div class="mx-auto my-5 h-screen w-full rounded-lg border border-slate-700">
