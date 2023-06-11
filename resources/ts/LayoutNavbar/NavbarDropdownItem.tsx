@@ -17,6 +17,7 @@ export const NavbarDropdownItem: React.FunctionComponent<
             <ChevronDownIcon className="h-3 w-3 stroke-2 transition-[stroke] group-hover:stroke-primary-500" />
             {isOpen && (
                 <div className="absolute top-3/4 mt-8 box-content w-max flex-col p-4 text-left !text-base rounded-blur-box cursor-auto">
+                    {/* TODO: format urls when there's content to link to */}
                     {item.urls.map((navbarUrl) => (
                         <div key={navbarUrl}>{navbarUrl}</div>
                     ))}
