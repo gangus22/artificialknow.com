@@ -1,12 +1,26 @@
 import "./bootstrap";
 import { createRoot } from "react-dom/client";
 import React from "react";
-import { ExampleComponent } from "./ExampleModule/ExampleComponent";
+import { reactComponentMap } from "./reactComponentMap";
 
-console.log("TS app entry point!");
+const reactComponentPrefix = "react-from-blade-";
 
-// TODO: render based on dynamic import. Make extension .ts. Multiple roots for individual components are OK
-const rootNode = document.getElementById("react-root");
-const reactRoot = createRoot(rootNode!);
+// TODO: encode and pass down props
+document
+    .querySelectorAll(`*[class^=${reactComponentPrefix}]`)
+    .forEach(async (element) => {
+        const componentName = element.className.split(reactComponentPrefix)[1];
+        const Component = await reactComponentMap[componentName];
+        createRoot(element).render(<Component />);
+    });
 
-reactRoot.render(<ExampleComponent />);
+// TODO: implement SSR
+/*
+ * createInertiaApp({
+ *     resolve: async (name) => reactComponentMap[name],
+ *     setup({ el, App, props }) {
+ *         console.log(el);
+ *         createRoot(el).render(<App {...props} />);
+ *     },
+ * }).then();
+ */
