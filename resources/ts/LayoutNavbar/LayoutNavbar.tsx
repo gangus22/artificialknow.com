@@ -36,8 +36,8 @@ export const LayoutNavbar: React.FC = () => {
 
     return (
         <div className="rounded-blur-box">
-            <div className="sticky top-0 z-10 flex gap-x-8">
-                <div className="justify-self-start"> LOGO </div>
+            <div className="sticky top-0 z-10 flex gap-x-8 items-center">
+                <div className="justify-self-start">This is a React navbar</div>
                 {testData.map((item, index) => (
                     <NavbarDropdownItem
                         key={item.name}

@@ -17,6 +17,15 @@
         @php($page ??= [])
         @inertiaHead
     </head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BNLK3BR63Q"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-BNLK3BR63Q');
+    </script>
     <body>
         @inertia
         @yield('bodyContent')
