@@ -10,6 +10,10 @@
                 <div class="rounded-lg border border-slate-700 p-4 bg-primary-400">
                     I'm nice and green, because TailwindCSS works now.
                 </div>
+                @php($example = \App\Models\Example::all()->first())
+                <div class="rounded-lg border border-slate-700 p-4 bg-secondary-400">
+                    {{$example?->test_data}}
+                </div>
             </div>
         </div>
         <div class="mx-auto my-5 h-screen w-full rounded-lg border border-slate-700">
