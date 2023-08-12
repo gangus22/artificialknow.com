@@ -20,4 +20,5 @@ Route::get('/', MainPageController::class);
 Route::get('/login', [LoginController::class, 'view']);
 Route::post('/login', [LoginController::class, 'attemptLogin']);
 
-Route::get('/dashboard', fn () => 'TBA');
+Route::get('/dashboard', fn () => dd('TBA'))
+    ->middleware('auth');
