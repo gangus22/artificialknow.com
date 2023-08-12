@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MainPageController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,3 +16,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', MainPageController::class);
+
+Route::get('/login', [LoginController::class, 'view']);
+Route::post('/login', [LoginController::class, 'attemptLogin']);
+
+Route::get('/dashboard', fn () => 'TBA');
