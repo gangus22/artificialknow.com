@@ -18,15 +18,15 @@ class LoginController extends Controller
     {
         $loginCredentials = $request->validate([
             'username' => ['required', 'string', 'max:60'],
-            'password' => ['required', 'string', 'password'],
+            'password' => ['required', 'string', 'max:255'],
         ]);
 
         if (Auth::attempt($loginCredentials)) {
             $request->session()->regenerate();
 
-            return redirect()->intended();
+            return redirect('/dashboard');
         }
 
-        return back(401);
+        return back();
     }
 }

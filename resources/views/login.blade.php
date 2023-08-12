@@ -14,19 +14,24 @@
               class="flex flex-col items-center gap-y-8 rounded-2xl border-2 border-slate-900 bg-slate-400 p-5 w-[20%]">
             @csrf
             <label>
-                <input id="username"
+                <input name="username"
                        type="text"
                        class="w-full rounded-2xl border-2 border-slate-900 bg-slate-300"
                        placeholder="Username">
             </label>
             <label>
-                <input id="password"
+                <input name="password"
                        type="password"
                        class="w-full rounded-2xl border-2 border-slate-900 bg-slate-300"
                        placeholder="Password">
             </label>
             <input type="submit"
                    class="cursor-pointer rounded-2xl border-2 border-slate-900 p-2 bg-secondary-400">
+            @if($errors->any())
+                <div class="rounded-2xl border-2 border-slate-900 p-2 text-red-800 bg-red-400/50">
+                    Access denied.
+                </div>
+            @endif
         </form>
     </div>
 </body>

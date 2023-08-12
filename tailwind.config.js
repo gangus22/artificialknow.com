@@ -15,6 +15,7 @@ module.exports = {
             slate: colors.slate,
             cyan: colors.cyan,
             white: colors.white,
+            red: colors.red,
         },
         fontFamily: {
             sans: ["Sora", "sans-serif"],
