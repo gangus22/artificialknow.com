@@ -1,9 +1,9 @@
-@extends('app')
+@extends('root.app')
 
 @section('bodyContent')
     <div class="h-full w-full py-5 main-page-bg-gradient">
         <div class="sticky top-4 z-50 mx-auto mb-5 w-[95%]">
-            <x-layout-navbar />
+            <x-layout-navbar/>
         </div>
         <div class="container mx-auto rounded-2xl bg-white/30 backdrop-blur-sm">
             <div class="flex flex-col items-center gap-y-4 p-5">
