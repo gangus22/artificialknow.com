@@ -2,31 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
+use Inertia\Response as InertiaResponse;
 
 class LoginController extends Controller
 {
-    public function view(): View
+    public function __invoke(): RedirectResponse|InertiaResponse
     {
-        return view('login');
-    }
-
-    public function attemptLogin(Request $request): RedirectResponse
-    {
-        $loginCredentials = $request->validate([
-            'username' => ['required', 'string', 'max:60'],
-            'password' => ['required', 'string', 'max:255'],
-        ]);
-
-        if (Auth::attempt($loginCredentials)) {
-            $request->session()->regenerate();
-
-            return redirect('/dashboard');
+        if (Auth::check()) {
+            return redirect()->route('dashboard');
         }
-
-        return back();
+        Inertia::setRootView('root.empty');
+        return Inertia::render('LoginPage');
     }
 }
