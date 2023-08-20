@@ -26,5 +26,5 @@ Route::post('/login', LoginAttemptController::class)
     ->name('loginPOST');
 
 Route::get('/dashboard', fn () => dd('TBA'))
-    ->name('dashboard')
-    ->middleware('auth');
+    ->middleware('auth')
+    ->name('dashboard');

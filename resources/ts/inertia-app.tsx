@@ -4,7 +4,9 @@ import React from "react";
 
 createInertiaApp({
     resolve: (name) => {
-        const pages = import.meta.glob("./Inertia/**/*.tsx", { eager: true });
+        const pages = import.meta.glob("./Inertia/**/*Page.tsx", {
+            eager: true,
+        });
         return pages[`./Inertia/${name}.tsx`];
     },
     setup({ el, App, props }) {
