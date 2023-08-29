@@ -1,6 +1,6 @@
 #!/bin/sh
 
-source ../.env
+. ../.env
 
 env=$APP_ENV
 host=$DB_HOST
