@@ -11,7 +11,7 @@ return new class extends Migration
     {
         Schema::create('pages', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Cluster::class);
+            $table->foreignIdFor(Cluster::class)->nullable();
             $table->string('slug');
             $table->boolean('indexed');
 
