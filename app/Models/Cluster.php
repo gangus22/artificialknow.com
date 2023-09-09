@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Exceptions\ClusterDepthException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -28,13 +29,15 @@ class Cluster extends Model
 
     use HasRecursiveRelationships;
 
-    private const MAX_CLUSTER_DEPTH = -2;
+    private const MAX_CLUSTER_DEPTH = 2;
 
+    /**
+     * @throws ClusterDepthException
+     */
     public function save(array $options = []): bool
     {
-        // TODO: exception class
-        if ($this->bloodline->last()->depth < self::MAX_CLUSTER_DEPTH) {
-            throw new \Exception('Cluster depth too deep.');
+        if ($this->ancestors()->count() > self::MAX_CLUSTER_DEPTH) {
+            throw new ClusterDepthException("Cluster depth for \"$this->slug\" exceeds specified maximum cluster depth (".self::MAX_CLUSTER_DEPTH.')');
         }
         return parent::save($options);
     }
