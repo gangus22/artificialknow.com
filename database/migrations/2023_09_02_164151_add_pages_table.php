@@ -12,10 +12,13 @@ return new class extends Migration
         Schema::create('pages', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Cluster::class)->nullable();
-            $table->string('slug');
-            $table->boolean('indexed');
+            $table->json('meta');
+            $table->string('path');
+            $table->boolean('indexed')->default(false);
+            $table->boolean('visible')->default(false);
+            $table->timestamps();
 
-            $table->unique(['cluster_id','slug']);
+            $table->unique([['cluster_id','path'], 'meta']);
         });
     }
 };
