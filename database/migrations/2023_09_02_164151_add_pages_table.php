@@ -18,7 +18,7 @@ return new class extends Migration
             $table->boolean('visible')->default(false);
             $table->timestamps();
 
-            $table->unique([['cluster_id','path'], 'meta']);
+            $table->unique(['cluster_id','path']);
         });
     }
 };
