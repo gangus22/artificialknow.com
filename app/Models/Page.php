@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Stringable;
 
 //TODO: store metadata here, in json field
 /**
@@ -17,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string $path
  * @property bool $indexed
  * @property string $slug
+ * @property-read $url
  * @property-read Cluster|null $cluster
  * @property-read Content|null $content
  */
@@ -28,16 +30,23 @@ class Page extends Model
         'indexed' => 'boolean'
     ];
 
+    protected $appends = [
+        'url'
+    ];
+
     /**
      * @return Attribute<string>
      */
     protected function url(): Attribute
     {
+        //TODO: maybe change this to ancestor, bloodline only gets parents saved in DB
         return Attribute::make(get: function () {
-                return $this->cluster
-                    ->bloodline
-                    ->flip()
-                    ->reduce(fn (Cluster $cluster, string $carry) => str($carry)->append('/')->append($cluster->slug), '');
+            $bloodlineString = $this->cluster
+                ->bloodline
+                ->reverse()
+                ->reduce(fn (Stringable $carry, Cluster $cluster) => $carry->append($cluster->slug)->append('/'), str(''));
+
+                return $bloodlineString->append($this->path)->toString();
             }
         )->shouldCache();
     }
