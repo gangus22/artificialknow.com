@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Controllers\ArticleController;
 use App\Models\Page;
 use Closure;
 use Illuminate\Http\Request;
@@ -32,8 +33,7 @@ class ResolveContent
 
         app()->instance(Page::class, $page);
 
-        // TODO: register route, and add a controller that handles displaying of content
-        // Route::bind(str($page->url)->prepend('/'), Controller);
+        Route::middleware('web')->get(str($page->url)->prepend('/')->toString(), ArticleController::class);
 
         return $next($request);
     }
