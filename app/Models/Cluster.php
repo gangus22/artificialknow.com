@@ -23,11 +23,11 @@ use Staudenmeir\LaravelAdjacencyList\Eloquent\Collection as AdjacencyCollection;
  */
 class Cluster extends Model
 {
-    public $timestamps = false;
-
     use HasFactory;
 
     use HasRecursiveRelationships;
+
+    public $timestamps = false;
 
     private const MAX_CLUSTER_DEPTH = 2;
 
@@ -37,7 +37,7 @@ class Cluster extends Model
     public function save(array $options = []): bool
     {
         if ($this->ancestors()->count() > self::MAX_CLUSTER_DEPTH) {
-            throw new ClusterDepthException("Cluster depth for \"$this->slug\" exceeds specified maximum cluster depth (".self::MAX_CLUSTER_DEPTH.')');
+            throw new ClusterDepthException();
         }
         return parent::save($options);
     }
