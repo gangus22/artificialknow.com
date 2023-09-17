@@ -1,1 +1,0 @@
-@extends('root.app')

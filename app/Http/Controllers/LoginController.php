@@ -14,7 +14,6 @@ class LoginController extends Controller
         if (Auth::check()) {
             return redirect()->route('dashboard');
         }
-        Inertia::setRootView('root.empty');
         return Inertia::render('LoginPage');
     }
 }

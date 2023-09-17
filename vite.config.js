@@ -8,7 +8,6 @@ export default defineConfig({
         laravel({
             input: [
                 "resources/css/tailwind.css",
-                "resources/ts/app.tsx",
                 "resources/ts/inertia-app.tsx",
             ],
             ssr: "resources/ts/ssr.tsx",
