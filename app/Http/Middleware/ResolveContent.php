@@ -12,13 +12,10 @@ use Symfony\Component\HttpFoundation\Response;
 class ResolveContent
 {
     /**
-     * Handle an incoming request.
-     *
      * @param Closure(Request): (Response) $next
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // TODO: alternatively, try to resolve the page with one big query, compare the query logs to see which one's faster
         $path = str($request->path())->explode('/')->last();
 
         /** @var Page $page */
@@ -28,7 +25,7 @@ class ResolveContent
             ->firstWhere('url', '=', $request->path());
 
         if ($page === null) {
-            abort(404);
+            return $next($request);
         }
 
         app()->instance(Page::class, $page);
