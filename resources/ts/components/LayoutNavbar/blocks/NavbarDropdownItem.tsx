@@ -1,6 +1,6 @@
 import React from "react";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import { NavbarDropdownItemProps } from "./types/NavbarDropdownItemProps";
+import { NavbarDropdownItemProps } from "../types/NavbarDropdownItemProps";
 
 export const NavbarDropdownItem: React.FunctionComponent<
     NavbarDropdownItemProps

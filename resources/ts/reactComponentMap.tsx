@@ -6,7 +6,7 @@ export const reactComponentMap: {
     ExampleComponent: import("./ExampleModule/ExampleComponent").then(
         (m) => m.ExampleComponent
     ),
-    LayoutNavbar: import("./LayoutNavbar/LayoutNavbar").then(
+    LayoutNavbar: import("./components/LayoutNavbar/blocks/LayoutNavbar").then(
         (m) => m.LayoutNavbar
     ),
 };

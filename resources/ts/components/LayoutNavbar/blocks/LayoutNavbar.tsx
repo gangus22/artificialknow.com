@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavbarItem } from "./types/NavbarItem";
+import { NavbarItem } from "../types/NavbarItem";
 import { NavbarDropdownItem } from "./NavbarDropdownItem";
 import { NavbarScreenOverlay } from "./NavbarScreenOverlay";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { NavbarScreenOverlayProps } from "./types/NavbarScreenOverlayProps";
+import { NavbarScreenOverlayProps } from "../types/NavbarScreenOverlayProps";
 
 export const NavbarScreenOverlay: React.FunctionComponent<
     NavbarScreenOverlayProps
