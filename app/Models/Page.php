@@ -3,10 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Stringable;
 
 //TODO: store metadata here, in json field
@@ -18,14 +18,16 @@ use Illuminate\Support\Stringable;
  * @property string $path
  * @property bool $indexed
  * @property string $slug
+ * @property mixed $meta
+ * @property int $visible
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property-read $url
  * @property-read Cluster|null $cluster
  * @property-read Content|null $content
  */
 class Page extends Model
 {
-    use HasFactory;
-
     protected $casts = [
         'indexed' => 'boolean'
     ];
@@ -39,7 +41,6 @@ class Page extends Model
      */
     protected function url(): Attribute
     {
-        //TODO: maybe change this to ancestor, bloodline only gets parents saved in DB
         return Attribute::make(get: function () {
             $bloodlineString = $this->cluster
                 ->bloodline
@@ -50,6 +51,8 @@ class Page extends Model
             }
         )->shouldCache();
     }
+
+    // TODO: add uncached URL attribute if needed
 
     public function cluster(): BelongsTo
     {
