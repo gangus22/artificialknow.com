@@ -2,7 +2,7 @@
     "private": true,
     "scripts": {
         "dev": "vite",
-        "build": "vite build",
+        "build": "vite build && vite build --ssr",
         "lint": "eslint \"**/*.{ts,tsx}\"",
         "prettier-check": "prettier --check resources/**/*.ts resources/**/*.tsx"
     },

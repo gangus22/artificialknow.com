@@ -11,6 +11,7 @@ export default defineConfig({
                 "resources/ts/app.tsx",
                 "resources/ts/inertia-app.tsx",
             ],
+            ssr: "resources/ts/ssr.tsx",
             refresh: true,
         }),
         react(),
