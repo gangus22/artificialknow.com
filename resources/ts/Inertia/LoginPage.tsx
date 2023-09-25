@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { LoginForm } from "../blocks/LoginForm/parts/LoginForm";
+import { LoginForm } from "../components/LoginForm/parts/LoginForm";
 
 export const LoginPage: React.FC = () => (
     <div className="flex h-screen w-screen flex-col items-center justify-center bg-gradient-to-bl from-slate-800 from-50% to-secondary-900">
