@@ -2,7 +2,6 @@ import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
 import react from "@vitejs/plugin-react";
 
-// TODO: add server-side rendering as a SEO improvement (InertiaJS)
 export default defineConfig({
     plugins: [
         laravel({
@@ -12,6 +11,7 @@ export default defineConfig({
             ],
             ssr: "resources/ts/ssr.tsx",
             refresh: true,
+            valetTls: "artificialknow.test",
         }),
         react(),
     ],
