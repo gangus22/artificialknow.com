@@ -11,7 +11,7 @@ export const NavbarDropdownItem: React.FunctionComponent<
         onClick={() => onClickHandler()}
     >
         <div className="relative flex items-center gap-x-1">
-            <div className="shrink-0 transition-colors group-hover:text-primary-500 group-hover:underline">
+            <div className="shrink-0 transition-colors group-hover:text-primary-600 group-hover:underline">
                 {item.name}
             </div>
             <ChevronDownIcon className="h-3 w-3 stroke-2 transition-[stroke] group-hover:stroke-primary-500" />

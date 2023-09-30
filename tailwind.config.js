@@ -10,15 +10,16 @@ module.exports = {
     ],
     theme: {
         colors: {
-            primary: colors.emerald,
-            secondary: colors.indigo,
+            primary: colors.indigo,
+            secondary: colors.yellow,
             slate: colors.slate,
             cyan: colors.cyan,
             white: colors.white,
             red: colors.red,
         },
         fontFamily: {
-            sans: ["Sora", "sans-serif"],
+            domine: ["Domine", "sans-serif"],
+            sans: ["Manrope", "sans-serif"],
             serif: ["Graphik", "serif"],
         },
         extend: {},
