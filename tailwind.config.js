@@ -10,8 +10,9 @@ module.exports = {
     ],
     theme: {
         colors: {
-            primary: colors.indigo,
-            secondary: colors.yellow,
+            primary: colors.green,
+            secondary: colors.sky,
+            orange: colors.orange,
             slate: colors.slate,
             cyan: colors.cyan,
             white: colors.white,

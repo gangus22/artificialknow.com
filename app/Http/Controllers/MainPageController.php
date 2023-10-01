@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class MainPageController extends Controller
 {
-    public function __invoke(): View
+    public function __invoke(): Response
     {
-        // TODO: design a proper main page
-        return view('page-layout');
+       return Inertia::render('MainPage');
     }
 }
