@@ -1,7 +1,6 @@
-/* eslint-disable-line */
+/* eslint-disable */
 import { createInertiaApp } from "@inertiajs/react";
 import ReactDOMServer from "react-dom/server";
-// eslint-disable-next-line import/no-unresolved
 import createServer from "@inertiajs/react/server";
 import React from "react";
 
