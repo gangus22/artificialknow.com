@@ -1,5 +1,5 @@
 import React from "react";
-import { InputField } from "../../InputField/parts/InputField";
+import { InputField } from "../../InputField/blocks/InputField";
 import { useLogin } from "../hooks/useLogin";
 
 export const LoginForm: React.FC = () => {

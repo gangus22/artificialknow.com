@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Page;
-use Illuminate\Http\JsonResponse;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class ArticleController extends Controller
 {
-    public function __invoke(Page $page): JsonResponse
+    public function __invoke(): Response
     {
-        // TODO: show actual article page
-        return response()->json(json_decode($page->content->article), options: JSON_PRETTY_PRINT);
+        return Inertia::render('ArticlePage');
     }
 }
