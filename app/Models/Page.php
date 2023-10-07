@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Stringable;
 
 //TODO: store metadata here, in json field
 /**
@@ -16,10 +15,11 @@ use Illuminate\Support\Stringable;
  * @property int $id
  * @property int|null $cluster_id
  * @property string $path
- * @property bool $indexed
+ * @property string $name
  * @property string $slug
  * @property mixed $meta
- * @property int $visible
+ * @property bool $visible
+ * @property bool $indexed
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Attribute<string> $url
@@ -29,7 +29,12 @@ use Illuminate\Support\Stringable;
 class Page extends Model
 {
     protected $casts = [
-        'indexed' => 'boolean'
+        'indexed' => 'boolean',
+        'visible' => 'boolean'
+    ];
+
+    protected $attributes = [
+        'meta' => '{}'
     ];
 
     protected $with = [
