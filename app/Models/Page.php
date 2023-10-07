@@ -22,7 +22,7 @@ use Illuminate\Support\Stringable;
  * @property int $visible
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read $url
+ * @property-read Attribute<string> $url
  * @property-read Cluster|null $cluster
  * @property-read Content|null $content
  */
@@ -30,6 +30,10 @@ class Page extends Model
 {
     protected $casts = [
         'indexed' => 'boolean'
+    ];
+
+    protected $with = [
+        'cluster'
     ];
 
     protected $appends = [
@@ -41,15 +45,8 @@ class Page extends Model
      */
     protected function url(): Attribute
     {
-        return Attribute::make(get: function () {
-            $bloodlineString = $this->cluster
-                ->bloodline
-                ->reverse()
-                ->reduce(fn (Stringable $carry, Cluster $cluster) => $carry->append($cluster->slug)->append('/'), str(''));
-
-                return $bloodlineString->append($this->path)->toString();
-            }
-        )->shouldCache();
+        return Attribute::make(get: fn () => str($this->cluster->url)->append($this->path)->toString())
+            ->shouldCache();
     }
 
     // TODO: add uncached URL attribute if needed
