@@ -32,12 +32,6 @@ class Cluster extends Model
 
     public $timestamps = false;
 
-    protected $fillable = [
-        'id',
-        'slug',
-        'parent_id'
-    ];
-
     protected $with = [
         'ancestors'
     ];
