@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Casts\AsMetaDataDTO;
+use App\DTOs\MetaDataDTO;
 use App\Enums\MetaDataEnum;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
@@ -17,7 +19,7 @@ use Illuminate\Support\Carbon;
  * @property string $path
  * @property string $name
  * @property string $slug
- * @property mixed $meta
+ * @property MetaDataDTO $meta
  * @property bool $visible
  * @property bool $indexed
  * @property Carbon|null $created_at
@@ -29,7 +31,7 @@ use Illuminate\Support\Carbon;
 class Page extends Model
 {
     protected $casts = [
-        'meta' => 'array',
+        'meta' => AsMetaDataDTO::class,
         'indexed' => 'boolean',
         'visible' => 'boolean'
     ];
