@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::table('pages', function (Blueprint $table) {
             $table->string('path', 255)->nullable()->change();
-            $table->string('name', 255)->after('meta');
+            $table->string('name', 255)->unique()->after('meta');
         });
     }
 };
