@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
+use App\Enums\MetaDataEnum;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 
-//TODO: store metadata here, in json field
 /**
  * App\Models\Page
  *
@@ -29,12 +29,13 @@ use Illuminate\Support\Carbon;
 class Page extends Model
 {
     protected $casts = [
+        'meta' => 'array',
         'indexed' => 'boolean',
         'visible' => 'boolean'
     ];
 
     protected $attributes = [
-        'meta' => '{}'
+        'meta' => MetaDataEnum::DEFAULT_JSON_VALUE
     ];
 
     protected $with = [
@@ -53,8 +54,6 @@ class Page extends Model
         return Attribute::make(get: fn () => str($this->cluster->url)->append($this->path)->toString())
             ->shouldCache();
     }
-
-    // TODO: add uncached URL attribute if needed
 
     public function cluster(): BelongsTo
     {

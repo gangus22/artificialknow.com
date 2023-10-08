@@ -2,9 +2,13 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\MetaDataEnum;
 use App\Filament\Resources\PageResource\Pages;
 use App\Models\Cluster;
 use App\Models\Page;
+use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -24,17 +28,37 @@ class PageResource extends Resource
     {
         return $form
             ->schema([
+                TextInput::make('name')
+                    ->helperText('The page\'s internal name. Not visible to users.')
+                    ->required()
+                    ->minLength(3)
+                    ->columnSpan(2),
                 Select::make('cluster_id')
+                    ->helperText('The cluster the page should belong to.')
                     ->required()
                     ->relationship('cluster')
-                    ->getOptionLabelFromRecordUsing(fn (Cluster $cluster) => $cluster->url)
+                    ->getOptionLabelFromRecordUsing(fn(Cluster $cluster) => $cluster->url)
                     ->preload()
                     ->searchable(),
                 TextInput::make('path')
+                    ->helperText('The path of the page. Leave empty for a pillar page.')
                     ->nullable(),
-                TextInput::make('name')
-                    ->required()
-                    ->minLength(3),
+                KeyValue::make('meta')
+                    ->helperText('The page\'s title tag and metadata.')
+                    ->default(MetaDataEnum::DEFAULT_VALUE_FOR_EDITOR)
+                    ->editableKeys(false)
+                    ->addable(false)
+                    ->deletable(false)
+                    ->columnSpan(2),
+                Fieldset::make('Indexing')
+                    ->schema([
+                        Checkbox::make('indexed')
+                            ->helperText('Should the page be indexed by search engines?')
+                            ->default(false),
+                        Checkbox::make('visible')
+                            ->helperText('Should the page be visible on the site?')
+                            ->default(false),
+                    ]),
             ]);
     }
 
@@ -45,7 +69,7 @@ class PageResource extends Resource
                 TextColumn::make('id')
                     ->numeric(),
                 TextColumn::make('name')
-                    ->description(fn (Page $page) => $page->url),
+                    ->description(fn(Page $page) => $page->url),
                 IconColumn::make('visible')
                     ->boolean(),
                 IconColumn::make('indexed')
