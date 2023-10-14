@@ -9,10 +9,14 @@ return new class extends Migration
 {
     public function up(): void
     {
+        Schema::dropIfExists('contents');
+
         Schema::create('contents', function (Blueprint $table) {
             $table->id();
+            $table->string('name', 255);
             $table->json('article');
-            $table->foreignIdFor(Page::class);
+            $table->foreignIdFor(Page::class)->constrained();
+            $table->timestamps();
         });
     }
 };
