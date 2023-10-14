@@ -33,19 +33,20 @@ class Page extends Model
     protected $casts = [
         'meta' => AsMetaDataDTO::class,
         'indexed' => 'boolean',
-        'visible' => 'boolean'
+        'visible' => 'boolean',
     ];
 
     protected $attributes = [
-        'meta' => MetaDataEnum::DEFAULT_JSON_VALUE
+        'meta' => MetaDataEnum::DEFAULT_JSON_VALUE,
     ];
 
     protected $with = [
-        'cluster'
+        'cluster',
+        'content',
     ];
 
     protected $appends = [
-        'url'
+        'url',
     ];
 
     /**
@@ -57,11 +58,17 @@ class Page extends Model
             ->shouldCache();
     }
 
+    /**
+     * @return BelongsTo<Cluster, Page>
+     */
     public function cluster(): BelongsTo
     {
         return $this->belongsTo(Cluster::class);
     }
 
+    /**
+     * @return HasOne<Content, Page>
+     */
     public function content(): HasOne
     {
         return $this->hasOne(Content::class);
