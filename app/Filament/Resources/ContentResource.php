@@ -29,7 +29,7 @@ class ContentResource extends Resource
             ->schema([
                 Select::make('page_id')
                     ->required()
-                    ->getOptionLabelFromRecordUsing(fn(Page $page) => $page->id.' - '.$page->name)
+                    ->getOptionLabelFromRecordUsing(fn(Page $page) => $page->id . ' - ' . $page->name)
                     ->relationship('page')
                     ->columnSpan(2),
                 TextInput::make('name')
@@ -45,9 +45,9 @@ class ContentResource extends Resource
                                     ->required(),
                                 Select::make('level')
                                     ->options([
-                                        '2' => 'h2',
-                                        '3' => 'h3',
-                                        '4' => 'h4',
+                                        2 => 'h2',
+                                        3 => 'h3',
+                                        4 => 'h4',
                                     ])
                                     ->required(),
                             ]),
