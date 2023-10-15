@@ -53,7 +53,7 @@ class ContentResource extends Resource
                             ]),
                         Block::make('paragraph')
                             ->schema([
-                                RichEditor::make('content')
+                                RichEditor::make('htmlContent')
                                     ->disableToolbarButtons([
                                         'h1',
                                         'h2',
@@ -66,10 +66,13 @@ class ContentResource extends Resource
                         Block::make('image')
                             ->schema([
                                 FileUpload::make('url')
+                                    // TODO: url cast elsewhere, form cant load images
+                                    ->dehydrateStateUsing(fn(array $state): string => str(collect($state)->first())->prepend(url('/') . '/')->toString())
+                                    ->preserveFilenames()
                                     ->label('Image')
                                     ->image()
                                     ->required()
-                                    ->disk('storage'),
+                                    ->disk('public'),
                                 TextInput::make('alt')
                                     ->label('Alt text')
                                     ->required(),
