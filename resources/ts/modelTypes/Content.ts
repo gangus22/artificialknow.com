@@ -1,5 +1,10 @@
 export type Content = {
     id: number;
     name: string;
-    article: JSON;
+    article: ArticlePart[];
+};
+
+export type ArticlePart = {
+    type: string;
+    data: Array<any>;
 };
