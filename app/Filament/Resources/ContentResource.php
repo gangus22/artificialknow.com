@@ -68,8 +68,6 @@ class ContentResource extends Resource
                         Block::make('image')
                             ->schema([
                                 FileUpload::make('url')
-                                    // TODO: url cast elsewhere, form cant load images
-                                    ->dehydrateStateUsing(fn(array $state): string => str(collect($state)->first())->prepend(url('/') . '/')->toString())
                                     ->preserveFilenames()
                                     ->label('Image')
                                     ->image()
