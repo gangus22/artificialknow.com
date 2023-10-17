@@ -49,6 +49,8 @@ class ContentResource extends Resource
                                         3 => 'h3',
                                         4 => 'h4',
                                     ])
+                                    ->selectablePlaceholder(false)
+                                    ->mutateDehydratedStateUsing(fn($state) => (int)$state)
                                     ->required(),
                             ]),
                         Block::make('paragraph')
