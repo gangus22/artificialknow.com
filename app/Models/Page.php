@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use App\Casts\AsMetaDataDTO;
-use App\DTOs\MetaDataDTO;
-use App\Enums\MetaDataEnum;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,7 +16,7 @@ use Illuminate\Support\Carbon;
  * @property string $path
  * @property string $name
  * @property string $slug
- * @property MetaDataDTO $meta
+ * @property array $meta
  * @property bool $visible
  * @property bool $indexed
  * @property Carbon|null $created_at
@@ -31,13 +28,9 @@ use Illuminate\Support\Carbon;
 class Page extends Model
 {
     protected $casts = [
-        'meta' => AsMetaDataDTO::class,
+        'meta' => 'array',
         'indexed' => 'boolean',
         'visible' => 'boolean',
-    ];
-
-    protected $attributes = [
-        'meta' => MetaDataEnum::DEFAULT_JSON_VALUE,
     ];
 
     protected $with = [
@@ -54,7 +47,7 @@ class Page extends Model
      */
     protected function url(): Attribute
     {
-        return Attribute::make(get: fn () => str($this->cluster->url)->append($this->path)->toString())
+        return Attribute::make(get: fn() => str($this->cluster->url)->append($this->path)->toString())
             ->shouldCache();
     }
 
