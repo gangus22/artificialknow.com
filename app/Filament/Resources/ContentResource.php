@@ -28,14 +28,17 @@ class ContentResource extends Resource
         return $form
             ->schema([
                 Select::make('page_id')
+                    ->helperText('The page the content should belong to.')
                     ->required()
                     ->getOptionLabelFromRecordUsing(fn(Page $page) => $page->id . ' - ' . $page->name)
                     ->relationship('page')
                     ->columnSpan(2),
                 TextInput::make('name')
+                    ->helperText('Internal name of the content. Not visible to users.')
                     ->columnSpan(2)
                     ->required(),
                 Builder::make('article')
+                    ->required()
                     ->columnSpan(2)
                     ->blocks([
                         Block::make('chapter')
@@ -67,7 +70,8 @@ class ContentResource extends Resource
                                                         'h1',
                                                         'h2',
                                                         'h3',
-                                                        'attachFiles'
+                                                        'attachFiles',
+                                                        'codeBlock'
                                                     ])
                                                     ->label('Paragraph')
                                                     ->required(),

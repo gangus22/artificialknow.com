@@ -43,9 +43,9 @@ class Cluster extends Model
      */
     protected function url(): Attribute
     {
-        return Attribute::make(get: fn () => $this->ancestors
+        return Attribute::make(get: fn() => $this->ancestors
             ->reverse()
-            ->reduce(fn (Stringable $carry, Cluster $cluster) => $carry->append($cluster->slug)->append('/'), str(''))
+            ->reduce(fn(Stringable $carry, Cluster $cluster) => $carry->append($cluster->slug)->append('/'), str(''))
             ->append($this->slug, '/')
             ->toString()
         )
@@ -63,11 +63,17 @@ class Cluster extends Model
         return parent::save($options);
     }
 
+    /**
+     * @return HasMany<Page, Cluster>
+     */
     public function pages(): HasMany
     {
         return $this->hasMany(Page::class);
     }
 
+    /**
+     * @return BelongsTo<Cluster, Cluster>
+     */
     public function parentCluster(): BelongsTo
     {
         return $this->belongsTo(Cluster::class, 'parent_id');

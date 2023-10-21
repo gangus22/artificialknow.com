@@ -23,11 +23,13 @@ class ClusterResource extends Resource
         return $form
             ->schema([
                 Select::make('parent_id')
+                    ->helperText('Optional parent cluster. Keep in mind, clusters can only get 2 parents deep!')
                     ->relationship('parentCluster')
-                    ->getOptionLabelFromRecordUsing(fn (Cluster $cluster) => $cluster->url)
+                    ->getOptionLabelFromRecordUsing(fn(Cluster $cluster) => $cluster->url)
                     ->preload()
                     ->searchable(),
                 TextInput::make('slug')
+                    ->helperText('URL slug of the cluster.')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -39,7 +41,7 @@ class ClusterResource extends Resource
             ->columns([
                 TextColumn::make('id'),
                 TextColumn::make('slug')
-                    ->description(fn (Cluster $cluster) => $cluster->url),
+                    ->description(fn(Cluster $cluster) => $cluster->url),
                 TextColumn::make('pages_count')
                     ->counts('pages')
             ])
@@ -49,11 +51,7 @@ class ClusterResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->bulkActions([]);
     }
 
     public static function getRelations(): array

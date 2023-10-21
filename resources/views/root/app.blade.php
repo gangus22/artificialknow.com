@@ -1,6 +1,6 @@
 @php
     use App\Models\Page;
-    use \App\DTOs\MetaDataDTO;
+    use App\DTOs\MetaDataDTO;
 
     /** @var Page $pageFromLaravel */
     $pageFromLaravel = app()->make(Page::class);
