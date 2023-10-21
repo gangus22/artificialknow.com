@@ -5,7 +5,7 @@ import { AsideWrapper } from "../components/AsideWrapper/blocks/AsideWrapper";
 import { Breadcrumbs } from "../components/Breadcrumbs/blocks/Breadcrumbs";
 import { ArticleHeader } from "../components/ArticleHeader/blocks/ArticleHeader";
 import { Page } from "../modelTypes/Page";
-import { ArticleRenderer } from "../components/ArticleRenderer/blocks/ArticleRenderer";
+import { ChapterRenderer } from "../components/ChapterRenderer/blocks/ChapterRenderer";
 
 export const ArticlePage: React.FC<{ page: Page }> = ({ page }) => (
     <PageWrapper>
@@ -22,7 +22,7 @@ export const ArticlePage: React.FC<{ page: Page }> = ({ page }) => (
             <ArticleWrapper>
                 <Breadcrumbs url={page.url} />
                 <ArticleHeader text={page.meta.titleTag} />
-                <ArticleRenderer articleJson={page.content.article} />
+                <ChapterRenderer chapters={page.content.article} />
             </ArticleWrapper>
         </div>
     </PageWrapper>

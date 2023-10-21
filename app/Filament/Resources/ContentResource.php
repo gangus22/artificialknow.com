@@ -38,45 +38,54 @@ class ContentResource extends Resource
                 Builder::make('article')
                     ->columnSpan(2)
                     ->blocks([
-                        Block::make('heading')
+                        Block::make('chapter')
                             ->schema([
-                                TextInput::make('text')
-                                    ->label('content')
+                                TextInput::make('title')
                                     ->required(),
-                                Select::make('level')
-                                    ->options([
-                                        2 => 'h2',
-                                        3 => 'h3',
-                                        4 => 'h4',
+                                TextInput::make('slug')
+                                    ->required(),
+                                Builder::make('parts')
+                                    ->columnSpan(2)
+                                    ->blocks([
+                                        Block::make('heading')
+                                            ->schema([
+                                                TextInput::make('text')
+                                                    ->label('content')
+                                                    ->required(),
+                                                Select::make('level')
+                                                    ->options([
+                                                        3 => 'h3',
+                                                        4 => 'h4',
+                                                    ])
+                                                    ->mutateDehydratedStateUsing(fn($state) => (int)$state)
+                                                    ->required(),
+                                            ]),
+                                        Block::make('paragraph')
+                                            ->schema([
+                                                RichEditor::make('htmlContent')
+                                                    ->disableToolbarButtons([
+                                                        'h1',
+                                                        'h2',
+                                                        'h3',
+                                                        'attachFiles'
+                                                    ])
+                                                    ->label('Paragraph')
+                                                    ->required(),
+                                            ]),
+                                        Block::make('image')
+                                            ->schema([
+                                                FileUpload::make('url')
+                                                    ->preserveFilenames()
+                                                    ->label('Image')
+                                                    ->image()
+                                                    ->required()
+                                                    ->disk('public'),
+                                                TextInput::make('alt')
+                                                    ->label('Alt text')
+                                                    ->required(),
+                                            ]),
                                     ])
-                                    ->selectablePlaceholder(false)
-                                    ->mutateDehydratedStateUsing(fn($state) => (int)$state)
-                                    ->required(),
-                            ]),
-                        Block::make('paragraph')
-                            ->schema([
-                                RichEditor::make('htmlContent')
-                                    ->disableToolbarButtons([
-                                        'h1',
-                                        'h2',
-                                        'h3',
-                                        'attachFiles'
-                                    ])
-                                    ->label('Paragraph')
-                                    ->required(),
-                            ]),
-                        Block::make('image')
-                            ->schema([
-                                FileUpload::make('url')
-                                    ->preserveFilenames()
-                                    ->label('Image')
-                                    ->image()
-                                    ->required()
-                                    ->disk('public'),
-                                TextInput::make('alt')
-                                    ->label('Alt text')
-                                    ->required(),
-                            ]),
+                            ])
                     ])
             ]);
     }
