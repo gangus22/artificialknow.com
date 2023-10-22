@@ -4,8 +4,10 @@ import { ArticleWrapper } from "../components/ArticleWrapper/blocks/ArticleWrapp
 import { AsideWrapper } from "../components/AsideWrapper/blocks/AsideWrapper";
 import { Breadcrumbs } from "../components/Breadcrumbs/blocks/Breadcrumbs";
 import { ArticleHeader } from "../components/ArticleHeader/blocks/ArticleHeader";
+import { Page } from "../modelTypes/Page";
+import { ChapterRenderer } from "../components/ChapterRenderer/blocks/ChapterRenderer";
 
-export const ArticlePage: React.FC = () => (
+export const ArticlePage: React.FC<{ page: Page }> = ({ page }) => (
     <PageWrapper>
         <div className="flex gap-x-10">
             <AsideWrapper>
@@ -18,12 +20,9 @@ export const ArticlePage: React.FC = () => (
                 </div>
             </AsideWrapper>
             <ArticleWrapper>
-                <Breadcrumbs />
-                <ArticleHeader />
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A,
-                assumenda blanditiis dicta esse exercitationem fugiat fugit
-                illum maxime minima molestiae mollitia necessitatibus nobis odio
-                omnis repudiandae sed suscipit totam veritatis.
+                <Breadcrumbs url={page.url} />
+                <ArticleHeader text={page.meta.titleTag} />
+                <ChapterRenderer chapters={page.content.article} />
             </ArticleWrapper>
         </div>
     </PageWrapper>

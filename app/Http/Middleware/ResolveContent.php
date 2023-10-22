@@ -16,7 +16,17 @@ class ResolveContent
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $path = str($request->path())->explode('/')->last();
+        // TODO: add url caching to Pages because this is painful
+        if ($request->path() === '/') {
+            $mainPage = Page::query()
+                ->where('path', '=', '/')
+                ->whereNull('cluster_id')
+                ->first();
+            app()->instance(Page::class, $mainPage);
+            return $next($request);
+        }
+
+        $path = str($request->path())->afterLast('/')->toString();
 
         /** @var Page $page */
         $page = Page::query()

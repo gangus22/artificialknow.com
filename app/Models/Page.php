@@ -7,33 +7,39 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Stringable;
 
-//TODO: store metadata here, in json field
 /**
  * App\Models\Page
  *
  * @property int $id
  * @property int|null $cluster_id
  * @property string $path
- * @property bool $indexed
+ * @property string $name
  * @property string $slug
- * @property mixed $meta
- * @property int $visible
+ * @property array $meta
+ * @property bool $visible
+ * @property bool $indexed
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read $url
+ * @property-read Attribute<string> $url
  * @property-read Cluster|null $cluster
  * @property-read Content|null $content
  */
 class Page extends Model
 {
     protected $casts = [
-        'indexed' => 'boolean'
+        'meta' => 'array',
+        'indexed' => 'boolean',
+        'visible' => 'boolean',
+    ];
+
+    protected $with = [
+        'cluster',
+        'content',
     ];
 
     protected $appends = [
-        'url'
+        'url',
     ];
 
     /**
@@ -41,24 +47,24 @@ class Page extends Model
      */
     protected function url(): Attribute
     {
-        return Attribute::make(get: function () {
-            $bloodlineString = $this->cluster
-                ->bloodline
-                ->reverse()
-                ->reduce(fn (Stringable $carry, Cluster $cluster) => $carry->append($cluster->slug)->append('/'), str(''));
-
-                return $bloodlineString->append($this->path)->toString();
-            }
-        )->shouldCache();
+        return Attribute::make(get: fn() => $this->cluster === null
+            ? $this->path
+            : str($this->cluster->url)->append($this->path)->toString()
+        )
+            ->shouldCache();
     }
 
-    // TODO: add uncached URL attribute if needed
-
+    /**
+     * @return BelongsTo<Cluster, Page>
+     */
     public function cluster(): BelongsTo
     {
         return $this->belongsTo(Cluster::class);
     }
 
+    /**
+     * @return HasOne<Content, Page>
+     */
     public function content(): HasOne
     {
         return $this->hasOne(Content::class);
