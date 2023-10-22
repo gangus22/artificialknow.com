@@ -16,7 +16,11 @@ class ResolveContent
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $path = str($request->path())->explode('/')->last();
+        $path = str($request->path())->afterLast('/')->toString();
+
+        if (empty($path)) {
+            $path = '/';
+        }
 
         /** @var Page $page */
         $page = Page::query()
