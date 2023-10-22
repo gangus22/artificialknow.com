@@ -47,7 +47,10 @@ class Page extends Model
      */
     protected function url(): Attribute
     {
-        return Attribute::make(get: fn() => str($this->cluster->url)->append($this->path)->toString())
+        return Attribute::make(get: fn() => $this->cluster === null
+            ? $this->path
+            : str($this->cluster->url)->append($this->path)->toString()
+        )
             ->shouldCache();
     }
 

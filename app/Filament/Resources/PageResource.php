@@ -35,7 +35,6 @@ class PageResource extends Resource
                     ->columnSpan(2),
                 Select::make('cluster_id')
                     ->helperText('The cluster the page should belong to.')
-                    ->required()
                     ->relationship('cluster')
                     ->getOptionLabelFromRecordUsing(fn(Cluster $cluster) => $cluster->url)
                     ->preload()
