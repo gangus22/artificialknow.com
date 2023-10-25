@@ -24,13 +24,16 @@ class ClusterResource extends Resource
             ->schema([
                 Select::make('parent_id')
                     ->helperText('Optional parent cluster. Keep in mind, clusters can only get 2 parents deep!')
+                    ->disabledOn('edit')
                     ->relationship('parentCluster')
                     ->getOptionLabelFromRecordUsing(fn(Cluster $cluster) => $cluster->url)
                     ->preload()
                     ->searchable(),
                 TextInput::make('slug')
                     ->helperText('URL slug of the cluster.')
+                    ->disabledOn('edit')
                     ->required()
+                    ->prefix('/')
                     ->maxLength(255),
             ]);
     }
@@ -48,9 +51,7 @@ class ClusterResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
+            ->actions([])
             ->bulkActions([]);
     }
 
