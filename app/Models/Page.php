@@ -16,12 +16,12 @@ use Illuminate\Support\Carbon;
  * @property string $path
  * @property string $name
  * @property string $slug
+ * @property string $url
  * @property array $meta
  * @property bool $visible
  * @property bool $indexed
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Attribute<string> $url
  * @property-read Cluster|null $cluster
  * @property-read Content|null $content
  */
@@ -37,22 +37,6 @@ class Page extends Model
         'cluster',
         'content',
     ];
-
-    protected $appends = [
-        'url',
-    ];
-
-    /**
-     * @return Attribute<string>
-     */
-    protected function url(): Attribute
-    {
-        return Attribute::make(get: fn() => $this->cluster === null
-            ? $this->path
-            : str($this->cluster->url)->append($this->path)->toString()
-        )
-            ->shouldCache();
-    }
 
     /**
      * @return BelongsTo<Cluster, Page>

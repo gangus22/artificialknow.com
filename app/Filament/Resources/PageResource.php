@@ -35,12 +35,14 @@ class PageResource extends Resource
                     ->columnSpan(2),
                 Select::make('cluster_id')
                     ->helperText('The cluster the page should belong to.')
+                    ->disabledOn('edit')
                     ->relationship('cluster')
                     ->getOptionLabelFromRecordUsing(fn(Cluster $cluster) => $cluster->url)
                     ->preload()
                     ->searchable(),
                 TextInput::make('path')
                     ->helperText('The path of the page. Leave empty for a pillar page.')
+                    ->disabledOn('edit')
                     ->nullable(),
                 KeyValue::make('meta')
                     ->helperText('The page\'s title tag and metadata.')

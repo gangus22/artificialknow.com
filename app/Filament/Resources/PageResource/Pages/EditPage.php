@@ -10,6 +10,9 @@ class EditPage extends EditRecord
 {
     protected static string $resource = PageResource::class;
 
+    // TODO: automatically add redirects when editing SEO sensitive data on pages (Cluster/path)
+    // use handleRecordUpdate
+
     protected function getHeaderActions(): array
     {
         return [
