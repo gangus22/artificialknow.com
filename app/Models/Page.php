@@ -20,6 +20,7 @@ use Illuminate\Support\Carbon;
  * @property array $meta
  * @property bool $visible
  * @property bool $indexed
+ * @property bool $is_splash_page
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Cluster|null $cluster

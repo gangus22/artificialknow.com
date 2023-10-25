@@ -60,6 +60,12 @@ class PageResource extends Resource
                             ->helperText('Should the page be visible on the site?')
                             ->default(false),
                     ]),
+                Fieldset::make('Routing')
+                    ->schema([
+                        Checkbox::make('is_splash_page')
+                            ->helperText('Check only if the Page has its own controller, and does not wish to use the usual article routing.')
+                            ->default(false),
+                    ]),
             ]);
     }
 
