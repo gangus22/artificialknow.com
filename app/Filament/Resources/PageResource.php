@@ -35,12 +35,14 @@ class PageResource extends Resource
                     ->columnSpan(2),
                 Select::make('cluster_id')
                     ->helperText('The cluster the page should belong to.')
+                    ->disabledOn('edit')
                     ->relationship('cluster')
                     ->getOptionLabelFromRecordUsing(fn(Cluster $cluster) => $cluster->url)
                     ->preload()
                     ->searchable(),
                 TextInput::make('path')
                     ->helperText('The path of the page. Leave empty for a pillar page.')
+                    ->disabledOn('edit')
                     ->nullable(),
                 KeyValue::make('meta')
                     ->helperText('The page\'s title tag and metadata.')
@@ -56,6 +58,12 @@ class PageResource extends Resource
                             ->default(false),
                         Checkbox::make('visible')
                             ->helperText('Should the page be visible on the site?')
+                            ->default(false),
+                    ]),
+                Fieldset::make('Routing')
+                    ->schema([
+                        Checkbox::make('is_splash_page')
+                            ->helperText('Check only if the Page has its own controller, and does not wish to use the usual article routing.')
                             ->default(false),
                     ]),
             ]);

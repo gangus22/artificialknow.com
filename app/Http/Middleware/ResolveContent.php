@@ -7,6 +7,7 @@ use App\Models\Page;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class ResolveContent
@@ -16,23 +17,12 @@ class ResolveContent
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // TODO: add url caching to Pages because this is painful
-        if ($request->path() === '/') {
-            $mainPage = Page::query()
-                ->where('path', '=', '/')
-                ->whereNull('cluster_id')
-                ->first();
-            app()->instance(Page::class, $mainPage);
-            return $next($request);
-        }
-
-        $path = str($request->path())->afterLast('/')->toString();
+        $path = $request->path();
 
         /** @var Page $page */
         $page = Page::query()
-            ->where('path', '=', $path)
-            ->get()
-            ->firstWhere('url', '=', $request->path());
+            ->with('cluster')
+            ->firstWhere('url', '=', $path);
 
         if ($page === null) {
             return $next($request);
@@ -40,7 +30,11 @@ class ResolveContent
 
         app()->instance(Page::class, $page);
 
-        Route::middleware('web')->get(str($page->url)->prepend('/')->toString(), ArticleController::class);
+        if ($page->is_splash_page) {
+            return $next($request);
+        }
+
+        Route::middleware('web')->get(Str::start($page->url, '/'), ArticleController::class);
 
         return $next($request);
     }
