@@ -4,7 +4,7 @@ import { ArticleWrapper } from "../components/ArticleWrapper/blocks/ArticleWrapp
 import { AsideWrapper } from "../components/AsideWrapper/blocks/AsideWrapper";
 import { Breadcrumbs } from "../components/Breadcrumbs/blocks/Breadcrumbs";
 import { ArticleHeader } from "../components/ArticleHeader/blocks/ArticleHeader";
-import { Page } from "../modelTypes/Page";
+import { Page } from "../models/Page";
 import { ChapterRenderer } from "../components/ChapterRenderer/blocks/ChapterRenderer";
 
 export const ArticlePage: React.FC<{ page: Page }> = ({ page }) => (

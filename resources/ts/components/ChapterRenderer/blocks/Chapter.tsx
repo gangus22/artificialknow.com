@@ -1,6 +1,6 @@
 import React from "react";
 import { Heading } from "../../Heading/blocks/Heading";
-import { ChapterData } from "../../../modelTypes/Content";
+import { ChapterData } from "../../../models/Content";
 import { useComponentMap } from "../hooks/useComponentMap";
 
 export const Chapter: React.FC<{ chapterData: ChapterData }> = ({
