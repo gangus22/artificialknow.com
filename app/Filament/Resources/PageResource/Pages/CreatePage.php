@@ -18,6 +18,7 @@ class CreatePage extends CreateRecord
         $cluster = Cluster::query()->find(data_get($data, 'cluster_id'));
 
         if ($cluster === null) {
+            $data['url'] = $data['path'];
             return parent::handleRecordCreation($data);
         }
 
