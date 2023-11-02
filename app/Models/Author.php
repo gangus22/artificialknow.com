@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\Author
@@ -20,4 +21,12 @@ class Author extends Model
     use HasFactory;
 
     public $timestamps = false;
+
+    /**
+     * @return HasMany<Content, Author>
+     */
+    public function contents(): HasMany
+    {
+        return $this->hasMany(Content::class);
+    }
 }

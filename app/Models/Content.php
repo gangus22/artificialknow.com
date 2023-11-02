@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $page_id
  *
  * @property-read Page $page
+ * @property-read Author|null $author
  */
 class Content extends Model
 {
@@ -27,5 +28,13 @@ class Content extends Model
     public function page(): BelongsTo
     {
         return $this->belongsTo(Page::class);
+    }
+
+    /**
+     * @return BelongsTo<Author, Content>
+     */
+    public function author(): BelongsTo
+    {
+        return $this->belongsTo(Author::class);
     }
 }

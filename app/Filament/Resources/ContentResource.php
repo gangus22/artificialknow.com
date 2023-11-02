@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ContentResource\Pages;
+use App\Models\Author;
 use App\Models\Content;
 use App\Models\Page;
 use Filament\Forms\Components\Builder;
@@ -37,6 +38,11 @@ class ContentResource extends Resource
                     ->helperText('Internal name of the content. Not visible to users.')
                     ->columnSpan(2)
                     ->required(),
+                Select::make('author_id')
+                    ->helperText('The displayed for the article.')
+                    ->required()
+                    ->getOptionLabelFromRecordUsing(fn(Author $author) => $author->name)
+                    ->relationship('author'),
                 Builder::make('article')
                     ->required()
                     ->columnSpan(2)
