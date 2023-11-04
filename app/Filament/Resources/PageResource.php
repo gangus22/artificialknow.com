@@ -75,7 +75,7 @@ class PageResource extends Resource
             ->columns([
                 TextColumn::make('id')
                     ->numeric(),
-                TextColumn::make('name')
+                TextColumn::make('title_tag')
                     ->description(fn(Page $page) => $page->url),
                 IconColumn::make('visible')
                     ->boolean(),
