@@ -23,7 +23,7 @@ class CreatePage extends CreateRecord
         }
 
         $urlPrefix = Str::finish($cluster->url, '/');
-        $data['url'] = str($data['slug'])->prepend($urlPrefix)->toString();
+        $data['url'] = str($data['path'])->prepend($urlPrefix)->toString();
 
         return parent::handleRecordCreation($data);
     }

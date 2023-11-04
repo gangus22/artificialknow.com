@@ -49,6 +49,7 @@ class ClusterResource extends Resource
                 TextColumn::make('id'),
                 TextColumn::make('slug')
                     ->description(fn(Cluster $cluster) => $cluster->url),
+                TextColumn::make('breadcrumbs_title'),
                 TextColumn::make('pages_count')
                     ->counts('pages')
             ])
