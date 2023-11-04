@@ -11,7 +11,9 @@
     ],
     "overrides": [],
     "parserOptions": {
-        "project": ["tsconfig.json"],
+        "project": [
+            "tsconfig.json"
+        ],
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
@@ -22,7 +24,12 @@
         "react-hooks"
     ],
     "rules": {
-        "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
+        "import/no-extraneous-dependencies": [
+            "error",
+            {
+                "devDependencies": true
+            }
+        ],
         "no-console": "off",
         "react/prop-types": "off",
         "import/prefer-default-export": "off",
@@ -36,12 +43,18 @@
         "react/no-unescaped-entities": "off",
         "react/jsx-props-no-spreading": "off",
         "jsx-a11y/no-static-element-interactions": "off",
-        "jsx-a11y/click-events-have-key-events": "off"
+        "jsx-a11y/click-events-have-key-events": "off",
+        "react/jsx-no-useless-fragment": "off"
     },
     "settings": {
         "import/resolver": {
             "node": {
-                "extensions": [".js", ".jsx", ".ts", ".tsx"]
+                "extensions": [
+                    ".js",
+                    ".jsx",
+                    ".ts",
+                    ".tsx"
+                ]
             },
             "caseSensitive": false
         }

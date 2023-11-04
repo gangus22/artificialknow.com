@@ -14,7 +14,7 @@ class ArticleController extends Controller
         return Inertia::render('ArticlePage', [
             'page' => $page,
             'author' => $page->content->author,
-            'breadcrumbs' => '',
+            'breadcrumbs' => $breadcrumbsService->generateBreadcrumbs($page),
         ]);
     }
 }

@@ -10,10 +10,11 @@ import { Author } from "../models/Author";
 import { ArticleInfoRow } from "../components/ArticleInfoRow/blocks/ArticleInfoRow";
 import { DottedDivider } from "../components/DottedDivider/blocks/DottedDivider";
 
-export const ArticlePage: React.FC<{ page: Page; author: Author }> = ({
-    page,
-    author,
-}) => (
+export const ArticlePage: React.FC<{
+    page: Page;
+    author: Author;
+    breadcrumbs: Object;
+}> = ({ page, author, breadcrumbs }) => (
     <PageWrapper page={page}>
         <div className="flex gap-x-10">
             <AsideWrapper>
@@ -26,8 +27,8 @@ export const ArticlePage: React.FC<{ page: Page; author: Author }> = ({
                 </div>
             </AsideWrapper>
             <ArticleWrapper author={author}>
-                <Breadcrumbs url={page.url} />
-                <ArticleHeader text={page.meta.titleTag} />
+                <Breadcrumbs breadcrumbs={breadcrumbs} />
+                <ArticleHeader text={page.title_tag} />
                 <ArticleInfoRow />
                 <DottedDivider />
                 <ChapterRenderer chapters={page.content.article} />

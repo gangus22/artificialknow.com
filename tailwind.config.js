@@ -25,5 +25,10 @@ module.exports = {
         },
         extend: {},
     },
-    plugins: [require("@tailwindcss/forms")],
+    plugins: [
+        require("@tailwindcss/forms"),
+        plugin(function ({ addVariant }) {
+            addVariant("second-to-last-of-type", "&:nth-last-of-type(2)");
+        }),
+    ],
 };
