@@ -14,7 +14,7 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property int|null $cluster_id
  * @property string $path
- * @property string $name
+ * @property string $title_tag
  * @property string $slug
  * @property string $url
  * @property array $meta

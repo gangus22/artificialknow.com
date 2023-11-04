@@ -8,7 +8,6 @@ use Spatie\LaravelData\Data;
 class MetaDataDTO extends Data
 {
     public function __construct(
-        public readonly string $titleTag,
         public readonly string $metaDescription,
         #[MapInputName('og:title')]
         public readonly string $ogTitle,
@@ -16,6 +15,7 @@ class MetaDataDTO extends Data
         public readonly string $ogDescription,
         #[MapInputName('og:image')]
         public readonly string $ogImage,
-    ) {
+    )
+    {
     }
 }

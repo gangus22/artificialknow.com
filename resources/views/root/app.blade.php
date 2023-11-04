@@ -20,8 +20,8 @@
     <meta property="og:description" content="{{ $metaData->ogDescription }}"/>
     <meta property="og:image" content="{{ $metaData->ogImage }}"/>
 
-    <title>{{ $metaData->titleTag }} | ArtificialKnow</title>
-
+    <title>{{ $pageFromLaravel->title_tag }} | ArtificialKnow</title>
+    
     @viteReactRefresh
     @vite('resources/css/tailwind.css')
     @vite('resources/ts/inertia-app.tsx')
