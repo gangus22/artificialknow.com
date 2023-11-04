@@ -2,6 +2,6 @@ export type Author = {
     id: number;
     name: string;
     bio: string;
-    img_path: string | null;
-    linkedin: string | null;
+    img_path?: string;
+    linkedin?: string;
 };
