@@ -7,7 +7,7 @@ export const PageWrapper: React.FC<PropsWithChildren<{ page: Page }>> = ({
     page,
     children,
 }) => (
-    <div className="flex h-full w-full flex-col gap-y-10">
+    <div className="flex h-full w-full flex-col gap-y-8">
         <LayoutNavbar />
         <div className="flex h-full flex-col gap-y-10 lg:container lg:mx-auto">
             <PageContext.Provider value={page}>{children}</PageContext.Provider>
