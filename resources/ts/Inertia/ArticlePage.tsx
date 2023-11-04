@@ -6,9 +6,13 @@ import { Breadcrumbs } from "../components/Breadcrumbs/blocks/Breadcrumbs";
 import { ArticleHeader } from "../components/ArticleHeader/blocks/ArticleHeader";
 import { Page } from "../models/Page";
 import { ChapterRenderer } from "../components/ChapterRenderer/blocks/ChapterRenderer";
+import { Author } from "../models/Author";
 
-export const ArticlePage: React.FC<{ page: Page }> = ({ page }) => (
-    <PageWrapper>
+export const ArticlePage: React.FC<{ page: Page; author: Author }> = ({
+    page,
+    author,
+}) => (
+    <PageWrapper page={page}>
         <div className="flex gap-x-10">
             <AsideWrapper>
                 <div className="sticky h-max bg-primary-100 top-32 p-5 rounded-lg">
@@ -19,7 +23,7 @@ export const ArticlePage: React.FC<{ page: Page }> = ({ page }) => (
                     Doloremque?
                 </div>
             </AsideWrapper>
-            <ArticleWrapper>
+            <ArticleWrapper author={author}>
                 <Breadcrumbs url={page.url} />
                 <ArticleHeader text={page.meta.titleTag} />
                 <ChapterRenderer chapters={page.content.article} />

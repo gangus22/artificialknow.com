@@ -11,7 +11,8 @@ class ArticleController extends Controller
     public function __invoke(Page $page): Response
     {
         return Inertia::render('ArticlePage', [
-            'page' => $page
+            'page' => $page,
+            'author' => $page->content->author
         ]);
     }
 }
