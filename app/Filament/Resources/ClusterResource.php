@@ -35,6 +35,10 @@ class ClusterResource extends Resource
                     ->required()
                     ->prefix('/')
                     ->maxLength(255),
+                TextInput::make('breadcrumbs_title')
+                    ->helperText('The title displayed in the Breadcrumbs.')
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Collection;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\Collection as AdjacencyCollection;
@@ -16,11 +17,14 @@ use Staudenmeir\LaravelAdjacencyList\Eloquent\Collection as AdjacencyCollection;
  *
  * @property int $id
  * @property string $slug
+ * @property string $breadcrumbs_title
  * @property int|null $parent_id
  * @property string $url
  * @property-read Cluster|null $parentCluster
  * @property-read Collection<int, Page> $pages
+ * @property-read Page|null $pillarPage,
  * @property-read AdjacencyCollection|Cluster[] $ancestors
+ * @property-read AdjacencyCollection|Cluster[] $ancestorsAndSelf
  */
 class Cluster extends Model
 {
@@ -49,6 +53,11 @@ class Cluster extends Model
     public function pages(): HasMany
     {
         return $this->hasMany(Page::class);
+    }
+
+    public function pillarPage(): HasOne
+    {
+        return $this->hasOne(Page::class)->whereNull('path');
     }
 
     /**
