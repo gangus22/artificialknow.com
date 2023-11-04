@@ -15,13 +15,14 @@ export const Breadcrumbs: React.FC<{
                         </span>
                     ) : (
                         <>
+                            <ChevronRightIcon className="second-to-last-of-type:block hidden h-4 w-4 rotate-180 md:second-to-last-of-type:hidden md:hidden" />
                             <a
                                 className="last-of-type:block hidden text-secondary-800 hover:underline md:block"
                                 href={link}
                             >
                                 {breadcrumb}
                             </a>
-                            <ChevronRightIcon className="second-to-last-of-type:block hidden h-4 w-4 second-to-last-of-type:rotate-180 md:second-to-last-of-type:rotate-0 md:block" />
+                            <ChevronRightIcon className="hidden h-4 w-4 md:block" />
                         </>
                     )}
                 </>
