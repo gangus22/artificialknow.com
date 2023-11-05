@@ -25,15 +25,20 @@ class AuthorResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')
+                    ->helperText('Displayed name of the author.')
                     ->columnSpan(2),
                 TextInput::make('title')
+                    ->helperText('Title of the author\'s occupation.')
                     ->columnSpan(2),
                 Textarea::make('bio')
+                    ->helperText('Short biography.')
                     ->columnSpan(2),
                 FileUpload::make('img_path')
+                    ->helperText('Displayed author image.')
                     ->label('Author image')
                     ->columnSpan(2),
                 TextInput::make('linkedin')
+                    ->helperText('LinkedIn page of author.')
                     ->prefix('https://')
             ]);
     }
