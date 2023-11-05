@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $page_id
  *
  * @property-read Page $page
- * @property-read Author|null $author
+ * @property-read Author $author
  */
 class Content extends Model
 {
