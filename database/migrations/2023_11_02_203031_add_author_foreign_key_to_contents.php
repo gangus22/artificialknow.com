@@ -11,7 +11,7 @@ return new class extends Migration {
     {
         Content::query()->delete();
         Schema::table('contents', function (Blueprint $table) {
-            $table->foreignIdFor(Author::class)->after('name')->constrained()->nullOnDelete();
+            $table->foreignIdFor(Author::class)->after('name')->constrained();
         });
     }
 };
