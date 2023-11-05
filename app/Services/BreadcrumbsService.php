@@ -17,7 +17,7 @@ class BreadcrumbsService implements BreadcrumbsServiceInterface
 
         $page->cluster?->ancestorsAndSelf->reverse()->each(function (Cluster $cluster) use ($breadcrumbs) {
             $breadcrumbs->put(
-                $cluster->breadcrumbs_title ?? str($cluster->slug)->title()->toString(),
+                $cluster->breadcrumbs_title,
                 url($cluster->pillarPage?->url ?? url('/'))
             );
         });

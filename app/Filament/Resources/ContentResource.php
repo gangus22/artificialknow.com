@@ -39,7 +39,7 @@ class ContentResource extends Resource
                     ->columnSpan(2)
                     ->required(),
                 Select::make('author_id')
-                    ->helperText('The displayed for the article.')
+                    ->helperText('The displayed author for the article.')
                     ->required()
                     ->getOptionLabelFromRecordUsing(fn(Author $author) => $author->name)
                     ->relationship('author'),
