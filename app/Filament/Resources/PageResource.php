@@ -28,8 +28,8 @@ class PageResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->helperText('The page\'s internal name. Not visible to users.')
+                TextInput::make('title_tag')
+                    ->helperText('The page\'s title tag.')
                     ->required()
                     ->minLength(3)
                     ->columnSpan(2),
@@ -75,7 +75,7 @@ class PageResource extends Resource
             ->columns([
                 TextColumn::make('id')
                     ->numeric(),
-                TextColumn::make('name')
+                TextColumn::make('title_tag')
                     ->description(fn(Page $page) => $page->url),
                 IconColumn::make('visible')
                     ->boolean(),

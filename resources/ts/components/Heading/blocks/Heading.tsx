@@ -11,10 +11,9 @@ export const Heading: React.FC<{ text: string; level: number }> = ({
         <HeadingTag
             className={classNames(
                 "font-sans font-black",
-                level === 1 && "text-5xl",
-                level === 2 && "text-3xl",
-                level === 3 && "text-2xl",
-                level === 4 && "text-xl"
+                level === 2 && "text-2xl md:text-3xl",
+                level === 3 && "text-xl md:text-2xl",
+                level === 4 && "text-lg md:text-xl"
             )}
         >
             {text}
