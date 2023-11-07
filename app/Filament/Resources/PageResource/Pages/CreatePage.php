@@ -2,29 +2,26 @@
 
 namespace App\Filament\Resources\PageResource\Pages;
 
+use App\Contracts\PageServiceInterface;
 use App\Filament\Resources\PageResource;
-use App\Models\Cluster;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 
 class CreatePage extends CreateRecord
 {
     protected static string $resource = PageResource::class;
 
+    /**
+     * @throws BindingResolutionException
+     */
     protected function handleRecordCreation(array $data): Model
     {
-        /** @var Cluster|null $cluster */
-        $cluster = Cluster::query()->find(data_get($data, 'cluster_id'));
+        /** @var PageServiceInterface $pageService */
+        $pageService = app()->make(PageServiceInterface::class);
 
-        if ($cluster === null) {
-            $data['url'] = $data['path'];
-            return parent::handleRecordCreation($data);
-        }
+        $page = $pageService->makePageWithCachedURL($data);
 
-        $urlPrefix = Str::finish($cluster->url, '/');
-        $data['url'] = str($data['path'])->prepend($urlPrefix)->toString();
-
-        return parent::handleRecordCreation($data);
+        return parent::handleRecordCreation($page->attributesToArray());
     }
 }
