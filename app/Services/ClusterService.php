@@ -3,29 +3,26 @@
 namespace App\Services;
 
 use App\Contracts\ClusterServiceInterface;
-use App\DTOs\CreateClusterDTO;
 use App\Models\Cluster;
 use Illuminate\Support\Str;
 
 class ClusterService implements ClusterServiceInterface
 {
-    public function makeClusterWithCachedURL(CreateClusterDTO $createClusterDTO): Cluster
+    public function makeClusterWithCachedURL(array $attributes): Cluster
     {
-        /** @var Cluster|null $parentCluster */
-        $parentCluster = Cluster::query()->find($createClusterDTO->parent_id);
-
         $cluster = new Cluster();
-        $cluster->parentCluster()->associate($parentCluster);
-        $cluster->slug = $createClusterDTO->slug;
-        $cluster->breadcrumbs_title = $createClusterDTO->breadcrumbs_title;
+        $cluster->fill($attributes);
+
+        /** @var Cluster|null $parentCluster */
+        $parentCluster = Cluster::query()->find($cluster->parent_id);
 
         if ($parentCluster === null) {
-            $cluster->url = $createClusterDTO->slug;
+            $cluster->url = $cluster->slug;
             return $cluster;
         }
 
         $urlPrefix = Str::finish($parentCluster->url, '/');
-        $cluster->url = str($createClusterDTO->slug)->prepend($urlPrefix)->toString();
+        $cluster->url = str($cluster->slug)->prepend($urlPrefix)->toString();
 
         return $cluster;
     }

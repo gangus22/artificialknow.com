@@ -21,7 +21,7 @@ class CreateCluster extends CreateRecord
         /** @var ClusterServiceInterface $clusterService */
         $clusterService = app()->make(ClusterServiceInterface::class);
 
-        $cluster = $clusterService->makeClusterWithCachedURL(CreateClusterDTO::from($data));
+        $cluster = $clusterService->makeClusterWithCachedURL($data);
 
         return parent::handleRecordCreation($cluster->attributesToArray());
 
