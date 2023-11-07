@@ -2,29 +2,28 @@
 
 namespace App\Filament\Resources\ClusterResource\Pages;
 
+use App\Contracts\ClusterServiceInterface;
+use App\DTOs\CreateClusterDTO;
 use App\Filament\Resources\ClusterResource;
-use App\Models\Cluster;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 
 class CreateCluster extends CreateRecord
 {
     protected static string $resource = ClusterResource::class;
 
+    /**
+     * @throws BindingResolutionException
+     */
     protected function handleRecordCreation(array $data): Model
     {
-        /** @var Cluster|null $parentCluster */
-        $parentCluster = Cluster::query()->find(data_get($data, 'parent_id'));
+        /** @var ClusterServiceInterface $clusterService */
+        $clusterService = app()->make(ClusterServiceInterface::class);
 
-        if ($parentCluster === null) {
-            $data['url'] = $data['slug'];
-            return parent::handleRecordCreation($data);
-        }
+        $cluster = $clusterService->makeClusterWithCachedURL(CreateClusterDTO::from($data));
 
-        $urlPrefix = Str::finish($parentCluster->url, '/');
-        $data['url'] = str($data['slug'])->prepend($urlPrefix)->toString();
+        return parent::handleRecordCreation($cluster->attributesToArray());
 
-        return parent::handleRecordCreation($data);
     }
 }
