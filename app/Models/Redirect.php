@@ -11,9 +11,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string $from
  * @property string $to
- * @property string $type
+ * @property int $type
  */
 class Redirect extends Model
 {
     use HasFactory;
+
+    // TODO: cast to enum
+    protected $casts = [
+        'type' => 'int'
+    ];
 }
