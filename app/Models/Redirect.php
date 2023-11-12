@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Casts\RedirectTypeCast;
+use App\Enums\RedirectType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,14 +13,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string $from
  * @property string $to
- * @property int $type
+ * @property RedirectType $type
  */
 class Redirect extends Model
 {
     use HasFactory;
 
-    // TODO: cast to enum
+    public $timestamps = false;
+
     protected $casts = [
-        'type' => 'int'
+        'type' => RedirectTypeCast::class,
     ];
 }

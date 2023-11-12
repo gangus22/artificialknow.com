@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\RedirectType;
 use App\Filament\Resources\RedirectResource\Pages;
-use App\Models\Page;
 use App\Models\Redirect;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -22,18 +22,19 @@ class RedirectResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('from')
-                    ->required()
-                    ->options(Page::query()->pluck('url')),
+                TextInput::make('from')
+                    ->disabledOn(['create', 'edit'])
+                    ->required(),
                 TextInput::make('to')
-                    ->url()
+                    ->disabledOn(['create', 'edit'])
                     ->required(),
                 Select::make('type')
-                    ->required()
+                    ->disabledOn(['create', 'edit'])
                     ->options([
-                        302 => 'Temporary (302)',
-                        301 => 'Permanent (301)',
+                        RedirectType::Temporary->value => 'Temporary (302)',
+                        RedirectType::Permanent->value => 'Permanent (301)',
                     ])
+                    ->required()
                     ->columnSpan(2)
             ]);
     }
@@ -42,7 +43,9 @@ class RedirectResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('id'),
+                Tables\Columns\TextColumn::make('from'),
+                Tables\Columns\TextColumn::make('to'),
             ])
             ->filters([
                 //
