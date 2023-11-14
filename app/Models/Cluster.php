@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use App\Exceptions\ClusterDepthException;
+use App\Models\Traits\HasCachedUrls;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\Collection as AdjacencyCollection;
 
@@ -32,6 +34,8 @@ class Cluster extends Model
 
     use HasRecursiveRelationships;
 
+    use HasCachedUrls;
+
     public $timestamps = false;
 
     private const MAX_CLUSTER_DEPTH = 2;
@@ -44,6 +48,7 @@ class Cluster extends Model
         if ($this->ancestors()->count() > self::MAX_CLUSTER_DEPTH) {
             throw new ClusterDepthException();
         }
+        $this->cacheUrl();
         return parent::save($options);
     }
 

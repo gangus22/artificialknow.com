@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\Models\Traits\HasCachedUrls;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -27,6 +27,8 @@ use Illuminate\Support\Carbon;
  */
 class Page extends Model
 {
+    use HasCachedUrls;
+
     protected $casts = [
         'meta' => 'array',
         'indexed' => 'boolean',
@@ -37,6 +39,12 @@ class Page extends Model
         'cluster',
         'content',
     ];
+
+    public function save(array $options = []): bool
+    {
+        $this->cacheUrl();
+        return parent::save($options);
+    }
 
     /**
      * @return BelongsTo<Cluster, Page>
@@ -52,5 +60,15 @@ class Page extends Model
     public function content(): HasOne
     {
         return $this->hasOne(Content::class);
+    }
+
+    public function getPrefixParentRelationshipName(): string
+    {
+        return 'cluster';
+    }
+
+    public function _getUrlFallbackAttribute(): string
+    {
+        return 'path';
     }
 }
