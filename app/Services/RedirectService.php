@@ -27,6 +27,15 @@ class RedirectService implements RedirectServiceInterface
         });
     }
 
+    public function redirectPage(Page $from, Page $to, RedirectType $type): void
+    {
+        DB::transaction(function () use ($from, $to, $type) {
+            $this->createRedirect($from->url, $to->url, $type);
+            $from->is_redirected = true;
+            $from->save();
+        });
+    }
+
     public function redirectCluster(Cluster $from, Cluster $to, RedirectType $type): void
     {
         $redirectMap = collect();

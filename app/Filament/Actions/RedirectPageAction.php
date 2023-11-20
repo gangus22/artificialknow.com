@@ -89,7 +89,7 @@ class RedirectPageAction implements CustomActionInterface
             $redirectService = app()->make(RedirectServiceInterface::class);
 
             try {
-                $records->each(fn(Page $page) => $redirectService->createRedirect($page->url, $toPage->url, $redirectType));
+                $records->each(fn(Page $page) => $redirectService->redirectPage($page, $toPage, $redirectType));
             } catch (Exception $exception) {
                 self::sendErrorMessage($exception->getMessage());
                 return;
