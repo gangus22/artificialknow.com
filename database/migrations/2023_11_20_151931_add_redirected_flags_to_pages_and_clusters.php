@@ -10,11 +10,11 @@ return new class extends Migration {
         Schema::table('pages', function (Blueprint $table) {
             $table->dropIndex('pages_name_unique');
 
-            $table->boolean('redirected')->default(false);
+            $table->boolean('is_redirected')->default(false);
         });
 
         Schema::table('clusters', function (Blueprint $table) {
-            $table->boolean('redirected')->default(false);
+            $table->boolean('is_redirected')->default(false);
         });
     }
 };

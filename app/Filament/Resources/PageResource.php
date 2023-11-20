@@ -81,6 +81,12 @@ class PageResource extends Resource
                     ->boolean(),
                 IconColumn::make('indexed')
                     ->boolean(),
+                IconColumn::make('is_redirected')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-arrows-right-left')
+                    ->trueColor('warning')
+                    ->falseIcon('heroicon-o-x-mark')
+                    ->falseColor('gray')
             ])
             ->filters([
                 //

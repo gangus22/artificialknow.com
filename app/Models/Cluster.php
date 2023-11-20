@@ -22,6 +22,7 @@ use Staudenmeir\LaravelAdjacencyList\Eloquent\Collection as AdjacencyCollection;
  * @property string $breadcrumbs_title
  * @property int|null $parent_id
  * @property string $url
+ * @property bool $is_redirected
  * @property-read Cluster|null $parentCluster
  * @property-read Collection<int, Page> $pages
  * @property-read Page|null $pillarPage,
@@ -38,6 +39,10 @@ class Cluster extends Model
     use HasCachedUrls;
 
     public $timestamps = false;
+
+    protected $casts = [
+        'is_redirected' => 'boolean'
+    ];
 
     private const MAX_CLUSTER_DEPTH = 2;
 

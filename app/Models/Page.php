@@ -17,6 +17,7 @@ use Illuminate\Support\Carbon;
  * @property string $title_tag
  * @property string $url
  * @property array $meta
+ * @property bool $is_redirected
  * @property bool $visible
  * @property bool $indexed
  * @property bool $is_splash_page
@@ -33,6 +34,7 @@ class Page extends Model
         'meta' => 'array',
         'indexed' => 'boolean',
         'visible' => 'boolean',
+        'is_redirected' => 'boolean'
     ];
 
     protected $with = [

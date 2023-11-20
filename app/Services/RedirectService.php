@@ -54,6 +54,8 @@ class RedirectService implements RedirectServiceInterface
 
             $redirectMap->each(fn(string $urlTo, string $urlFrom) => $this->createRedirect($urlFrom, $urlTo, $type));
 
+            $from->pages()->update(['is_redirected' => true]);
+
             $from->children->each(function (Cluster $childCluster) use ($to, $type) {
                 $destinationCluster = $childCluster->replicate();
 
@@ -62,6 +64,9 @@ class RedirectService implements RedirectServiceInterface
 
                 $this->redirectCluster($childCluster, $destinationCluster, $type);
             });
+
+            $from->is_redirected = true;
+            $from->save();
         });
     }
 
