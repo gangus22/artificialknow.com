@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Contracts\RedirectServiceInterface;
 use App\Enums\RedirectType;
+use App\Exceptions\AlreadyExistingDestinationException;
 use App\Models\Cluster;
 use App\Models\Page;
 use App\Models\Redirect;
@@ -28,13 +29,18 @@ class RedirectService implements RedirectServiceInterface
         $redirectMap = collect();
 
         $from->load('pages');
+        $existingDestinationUrls = $to->pages->pluck('url');
 
-        $destinationPages = $from->pages->map(function (Page $page) use ($to, &$redirectMap) {
+        $destinationPages = $from->pages->map(function (Page $page) use ($to, &$redirectMap, $existingDestinationUrls) {
             $destinationPage = $page->replicate();
 
             $destinationPage->cluster()->associate($to);
             $destinationPage->cacheUrl();
-            // TODO: check if these pages exist on destination already
+
+            if ($existingDestinationUrls->contains($destinationPage->url)) {
+                throw new AlreadyExistingDestinationException($page, $destinationPage);
+            }
+
             $redirectMap->put($page->url, $destinationPage->url);
 
             return $destinationPage;
