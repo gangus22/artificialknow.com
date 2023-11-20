@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Enums\MetaDataEnum;
+use App\Filament\Actions\RedirectPageAction;
 use App\Filament\Resources\PageResource\Pages;
 use App\Models\Cluster;
 use App\Models\Page;
@@ -92,12 +93,11 @@ class PageResource extends Resource
                 //
             ])
             ->actions([
+                //TODO: replicate action
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                RedirectPageAction::make(),
             ]);
     }
 
