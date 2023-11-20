@@ -5,6 +5,7 @@ namespace App\Filament\Actions;
 use App\Contracts\RedirectServiceInterface;
 use App\Enums\RedirectType;
 use App\Models\Cluster;
+use Exception;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Wizard\Step;
@@ -65,6 +66,7 @@ class RedirectClusterAction implements CustomActionInterface
             $redirectType = RedirectType::from(data_get($data, 'clusterRedirectType'));
 
             if ($toClusterId === null) {
+                self::sendErrorMessage('Destination Cluster ID not found!');
                 return;
             }
 
@@ -72,22 +74,39 @@ class RedirectClusterAction implements CustomActionInterface
             $toCluster = Cluster::query()->find($toClusterId);
 
             if ($toCluster === null) {
+                self::sendErrorMessage('Destination Cluster not found!');
                 return;
             }
 
-            //soft delete pages and the old cluster (mark with a badge in admin)
-            //actually, use a redirected flag with a scope
-            //add action logging.
+            $fromClusterIds = $records->pluck('id');
+
+            if ($fromClusterIds->contains($toCluster->id)) {
+                self::sendErrorMessage('Cannot redirect to same Cluster!');
+                return;
+            }
 
             /** @var RedirectServiceInterface $redirectService */
             $redirectService = app()->make(RedirectServiceInterface::class);
 
-            $records->each(fn(Cluster $cluster) => $redirectService->redirectCluster($cluster, $toCluster, $redirectType));
+            try {
+                $records->each(fn(Cluster $cluster) => $redirectService->redirectCluster($cluster, $toCluster, $redirectType));
+            } catch (Exception $exception) {
+                self::sendErrorMessage($exception->getMessage());
+                return;
+            }
 
             Notification::make()
                 ->title('Cluster(s) successfully redirected.')
                 ->success()
                 ->send();
         };
+    }
+
+    private static function sendErrorMessage(string $message): void
+    {
+        Notification::make()
+            ->title($message)
+            ->danger()
+            ->send();
     }
 }
