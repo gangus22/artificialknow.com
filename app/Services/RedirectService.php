@@ -72,29 +72,44 @@ class RedirectService implements RedirectServiceInterface
 
     /**
      * @param Redirect $redirect
-     * @param array<Redirect> $chain
      * @return Redirect
      * @throws RedirectLoopException
      */
-    private function simplifyRedirectChain(Redirect $redirect, array &$chain = []): Redirect
+    private function simplifyRedirectChain(Redirect $redirect): Redirect
     {
-        $chain[] = $redirect;
+        $chain = collect([$redirect]);
 
         /** @var Redirect|null $nextRedirect */
         $nextRedirect = Redirect::query()->firstWhere('from', '=', $redirect->to);
 
-        if ($nextRedirect === null) {
-            $redirect->from = $chain[0]->from;
+        while ($nextRedirect !== null) {
+            if ($chain->contains($nextRedirect)) {
+                throw new RedirectLoopException($chain);
+            }
 
-            collect($chain)->each(fn(Redirect $redirect) => $redirect->delete());
+            $chain->add($nextRedirect);
 
-            return $redirect;
+            $nextRedirect = Redirect::query()->firstWhere('from', '=', $nextRedirect->to);
         }
 
-        if (in_array($nextRedirect, $chain)) {
-            throw new RedirectLoopException($chain);
+        /** @var Redirect|null $previousRedirect */
+        $previousRedirect = Redirect::query()->firstWhere('to', '=', $redirect->from);
+
+        while ($previousRedirect !== null) {
+            if ($chain->contains($previousRedirect)) {
+                throw new RedirectLoopException($chain);
+            }
+
+            $chain->prepend($previousRedirect);
+
+            $previousRedirect = Redirect::query()->firstWhere('to', '=', $previousRedirect->from);
         }
 
-        return $this->simplifyRedirectChain($nextRedirect, $chain);
+        $redirect->from = $chain->first()->from;
+        $redirect->to = $chain->last()->to;
+
+        $chain->each(fn(Redirect $redirect) => $redirect->delete());
+
+        return $redirect;
     }
 }
