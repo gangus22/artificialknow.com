@@ -25,6 +25,7 @@ use Staudenmeir\LaravelAdjacencyList\Eloquent\Collection as AdjacencyCollection;
  * @property-read Cluster|null $parentCluster
  * @property-read Collection<int, Page> $pages
  * @property-read Page|null $pillarPage,
+ * @property-read AdjacencyCollection|Cluster[] $children
  * @property-read AdjacencyCollection|Cluster[] $ancestors
  * @property-read AdjacencyCollection|Cluster[] $ancestorsAndSelf
  */

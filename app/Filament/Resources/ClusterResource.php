@@ -2,13 +2,13 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Actions\RedirectClusterAction;
 use App\Filament\Resources\ClusterResource\Pages;
 use App\Models\Cluster;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -57,7 +57,9 @@ class ClusterResource extends Resource
                 //
             ])
             ->actions([])
-            ->bulkActions([]);
+            ->bulkActions([
+                RedirectClusterAction::make(),
+            ]);
     }
 
     public static function getRelations(): array
