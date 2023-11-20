@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Contracts\RedirectServiceInterface;
 use App\Enums\RedirectType;
 use App\Exceptions\AlreadyExistingDestinationException;
+use App\Exceptions\RedirectLoopException;
 use App\Models\Cluster;
 use App\Models\Page;
 use App\Models\Redirect;
@@ -12,16 +13,18 @@ use Illuminate\Support\Facades\DB;
 
 class RedirectService implements RedirectServiceInterface
 {
-
     public function createRedirect(string $from, string $to, RedirectType $type): void
     {
-        // TODO: check loops etc
         $redirect = new Redirect();
         $redirect->from = $from;
         $redirect->to = $to;
-        $redirect->type = $type;
 
-        $redirect->save();
+        DB::transaction(function () use ($redirect, $type) {
+            $redirect = $this->simplifyRedirectChain($redirect);
+            $redirect->type = $type;
+
+            $redirect->save();
+        });
     }
 
     public function redirectCluster(Cluster $from, Cluster $to, RedirectType $type): void
@@ -60,5 +63,33 @@ class RedirectService implements RedirectServiceInterface
                 $this->redirectCluster($childCluster, $destinationCluster, $type);
             });
         });
+    }
+
+    /**
+     * @param Redirect $redirect
+     * @param array<Redirect> $chain
+     * @return Redirect
+     * @throws RedirectLoopException
+     */
+    private function simplifyRedirectChain(Redirect $redirect, array &$chain = []): Redirect
+    {
+        $chain[] = $redirect;
+
+        /** @var Redirect|null $nextRedirect */
+        $nextRedirect = Redirect::query()->firstWhere('from', '=', $redirect->to);
+
+        if ($nextRedirect === null) {
+            $redirect->from = $chain[0]->from;
+
+            collect($chain)->each(fn(Redirect $redirect) => $redirect->delete());
+
+            return $redirect;
+        }
+
+        if (in_array($nextRedirect, $chain)) {
+            throw new RedirectLoopException($chain);
+        }
+
+        return $this->simplifyRedirectChain($nextRedirect, $chain);
     }
 }
