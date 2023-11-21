@@ -33,6 +33,9 @@ class RedirectService implements RedirectServiceInterface
             $this->createRedirect($from->url, $to->url, $type);
             $from->is_redirected = true;
             $from->save();
+
+            $from->content?->page()?->associate($to);
+            $to->save();
         });
     }
 

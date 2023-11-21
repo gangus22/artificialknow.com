@@ -15,6 +15,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -93,11 +94,12 @@ class PageResource extends Resource
                 //
             ])
             ->actions([
-                //TODO: replicate action
-                Tables\Actions\EditAction::make(),
+                ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    RedirectPageAction::make(),
+                ]),
             ])
             ->bulkActions([
-                RedirectPageAction::make(),
             ]);
     }
 
