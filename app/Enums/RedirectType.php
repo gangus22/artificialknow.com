@@ -2,8 +2,8 @@
 
 namespace App\Enums;
 
-enum RedirectType: string
+enum RedirectType: int
 {
-    case Permanent = '301';
-    case Temporary = '302';
+    case Permanent = 301;
+    case Temporary = 302;
 }
