@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Enums\MetaDataEnum;
+use App\Filament\Actions\CreateFunnelRedirectAction;
 use App\Filament\Actions\RedirectPageAction;
 use App\Filament\Resources\PageResource\Pages;
 use App\Models\Cluster;
@@ -100,6 +101,7 @@ class PageResource extends Resource
                 ]),
             ])
             ->bulkActions([
+                CreateFunnelRedirectAction::make(),
             ]);
     }
 
