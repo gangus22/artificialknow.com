@@ -58,7 +58,7 @@ class RedirectService implements RedirectServiceInterface
                 throw new AlreadyExistingDestinationException($page, $destinationPage);
             }
 
-            $redirectMap->put($page, $destinationPage);
+            $redirectMap->add([$page, $destinationPage]);
 
             return $destinationPage;
         });
@@ -66,7 +66,7 @@ class RedirectService implements RedirectServiceInterface
         DB::transaction(function () use ($from, $to, $destinationPages, $redirectMap, $type) {
             $to->pages()->saveMany($destinationPages);
 
-            $redirectMap->each(fn(Page $pageTo, Page $pageFrom) => $this->redirectPage($pageFrom, $pageTo, $type));
+            $redirectMap->each(fn(array $pages) => $this->redirectPage($pages[0], $pages[1], $type));
 
             $from->children->each(function (Cluster $childCluster) use ($to, $type) {
                 $destinationCluster = $childCluster->replicate();
