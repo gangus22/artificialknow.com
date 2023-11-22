@@ -35,7 +35,7 @@ class RedirectService implements RedirectServiceInterface
             $from->save();
 
             if ($to->content === null) {
-                $from->content?->page()?->associate($to);
+                $to->content()->save($from->content);
                 $to->save();
             }
         });
@@ -49,7 +49,7 @@ class RedirectService implements RedirectServiceInterface
         $existingDestinationUrls = $to->pages->pluck('url');
 
         $destinationPages = $from->pages->map(function (Page $page) use ($to, &$redirectMap, $existingDestinationUrls) {
-            $destinationPage = $page->replicate();
+            $destinationPage = $page->replicate()->withoutRelations();
 
             $destinationPage->cluster()->associate($to);
             $destinationPage->cacheUrl();
