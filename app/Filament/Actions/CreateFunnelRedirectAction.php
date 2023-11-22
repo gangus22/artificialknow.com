@@ -98,7 +98,7 @@ class CreateFunnelRedirectAction implements CustomActionInterface
             }
 
             Notification::make()
-                ->title('Cluster(s) successfully redirected.')
+                ->title('Pages successfully redirected.')
                 ->success()
                 ->send();
         };

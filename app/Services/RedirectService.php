@@ -18,11 +18,10 @@ class RedirectService implements RedirectServiceInterface
         $redirect = new Redirect();
         $redirect->from = $from;
         $redirect->to = $to;
+        $redirect->type = $type;
 
         DB::transaction(function () use ($redirect, $type) {
             $redirect = $this->simplifyRedirectChain($redirect);
-            $redirect->type = $type;
-
             $redirect->save();
         });
     }
@@ -45,7 +44,6 @@ class RedirectService implements RedirectServiceInterface
     {
         $redirectMap = collect();
 
-        $from->load('pages');
         $existingDestinationUrls = $to->pages->pluck('url');
 
         $destinationPages = $from->pages->map(function (Page $page) use ($to, &$redirectMap, $existingDestinationUrls) {

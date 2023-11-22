@@ -59,7 +59,7 @@ class RedirectPageAction implements CustomActionInterface
             Step::make('Confirm')
                 ->schema([
                     Textarea::make('notice')
-                        ->default('Commence redirect? This will create a new Page under the selected Cluster, and copy all contents.')
+                        ->default('Commence redirect? This will create a new Page under the selected Cluster, and move all contents.')
                         ->disabled()
                         ->readOnly()
                 ])

@@ -15,7 +15,7 @@ trait HasCachedUrls
         return 'parentCluster';
     }
 
-    public function _getUrlFallbackAttribute(): string
+    public function getUrlFallback(): string
     {
         return 'slug';
     }
@@ -35,7 +35,7 @@ trait HasCachedUrls
         /** @var T|null $prefixParent */
         $prefixParent = $this->{$this->getPrefixParentRelationshipName()};
 
-        $fallback = $this->{$this->_getUrlFallbackAttribute()};
+        $fallback = $this->{$this->getUrlFallback()};
 
         if ($prefixParent === null) {
             $this->{$this->getLocalAttributeToCache()} = $fallback;

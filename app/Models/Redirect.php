@@ -17,8 +17,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Redirect extends Model
 {
-    use HasFactory;
-
     public $timestamps = false;
 
     protected $casts = [

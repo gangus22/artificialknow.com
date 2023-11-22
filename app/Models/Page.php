@@ -71,7 +71,7 @@ class Page extends Model
         return 'cluster';
     }
 
-    public function _getUrlFallbackAttribute(): string
+    public function getUrlFallback(): string
     {
         return 'path';
     }
