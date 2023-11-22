@@ -2,6 +2,7 @@
 
 use App\Contracts\RedirectServiceInterface;
 use App\Enums\RedirectType;
+use App\Exceptions\RedirectLoopException;
 use App\Models\Cluster;
 use App\Models\Page;
 use App\Models\Redirect;
@@ -11,6 +12,26 @@ use Tests\TestCase;
 uses(TestCase::class, RefreshDatabase::class);
 
 $redirectTypes = [RedirectType::Permanent, RedirectType::Temporary];
+
+test('Create redirect while simplifying chain', function (RedirectType $type) {
+    /** @var RedirectServiceInterface $redirectService */
+    $redirectService = app()->make(RedirectServiceInterface::class);
+
+    $redirectService->createRedirect('one', 'two', $type);
+    $redirectService->createRedirect('two', 'three', $type);
+
+    $this->assertDatabaseHas('redirects', ['from' => 'one', 'to' => 'three', 'type' => $type->value]);
+})->with($redirectTypes);
+
+test('Create redirect and detect loop', function (RedirectType $type) {
+    /** @var RedirectServiceInterface $redirectService */
+    $redirectService = app()->make(RedirectServiceInterface::class);
+
+    $this->expectException(RedirectLoopException::class);
+
+    $redirectService->createRedirect('one', 'two', $type);
+    $redirectService->createRedirect('two', 'one', $type);
+})->with($redirectTypes);
 
 test('Simple Cluster redirect without depth', function (RedirectType $type) {
     $cluster = Cluster::factory()->create();
