@@ -33,7 +33,7 @@ class RedirectService implements RedirectServiceInterface
             $from->is_redirected = true;
             $from->save();
 
-            if ($to->content === null) {
+            if ($to->content === null && $from->content !== null) {
                 $to->content()->save($from->content);
                 $to->save();
             }
