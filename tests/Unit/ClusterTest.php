@@ -10,7 +10,7 @@ uses(TestCase::class, RefreshDatabase::class);
 test('New Cluster with zero depth is saved into DB', function () {
     $cluster = Cluster::factory()->create();
 
-    $this->assertDatabaseHas('clusters', $cluster->toArray());
+    $this->assertDatabaseHas('clusters', $cluster->attributesToArray());
 });
 
 test('New Cluster with acceptable depth is saved into DB', function () {
@@ -23,9 +23,9 @@ test('New Cluster with acceptable depth is saved into DB', function () {
     $cluster3->parentCluster()->associate($cluster2);
     $cluster3->save();
 
-    $this->assertDatabaseHas('clusters', $cluster->toArray());
-    $this->assertDatabaseHas('clusters', $cluster2->withoutRelations()->toArray());
-    $this->assertDatabaseHas('clusters', $cluster3->withoutRelations()->toArray());
+    $this->assertDatabaseHas('clusters', $cluster->attributesToArray());
+    $this->assertDatabaseHas('clusters', $cluster2->withoutRelations()->attributesToArray());
+    $this->assertDatabaseHas('clusters', $cluster3->withoutRelations()->attributesToArray());
     expect($cluster2->parentCluster)->toBe($cluster)
         ->and($cluster3->parentCluster)->toBe($cluster2);
 });
