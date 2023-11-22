@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\PageResource\Pages;
+namespace App\Filament\Resources\RedirectResource\Pages;
 
-use App\Filament\Resources\PageResource;
+use App\Filament\Resources\RedirectResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditPage extends EditRecord
+class EditRedirect extends EditRecord
 {
-    protected static string $resource = PageResource::class;
+    protected static string $resource = RedirectResource::class;
 
     protected function getHeaderActions(): array
     {

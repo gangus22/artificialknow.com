@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use App\Exceptions\ClusterDepthException;
+use App\Models\Traits\HasCachedUrls;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\Collection as AdjacencyCollection;
 
@@ -20,9 +22,11 @@ use Staudenmeir\LaravelAdjacencyList\Eloquent\Collection as AdjacencyCollection;
  * @property string $breadcrumbs_title
  * @property int|null $parent_id
  * @property string $url
+ * @property bool $is_redirected
  * @property-read Cluster|null $parentCluster
  * @property-read Collection<int, Page> $pages
  * @property-read Page|null $pillarPage,
+ * @property-read AdjacencyCollection|Cluster[] $children
  * @property-read AdjacencyCollection|Cluster[] $ancestors
  * @property-read AdjacencyCollection|Cluster[] $ancestorsAndSelf
  */
@@ -32,7 +36,13 @@ class Cluster extends Model
 
     use HasRecursiveRelationships;
 
+    use HasCachedUrls;
+
     public $timestamps = false;
+
+    protected $casts = [
+        'is_redirected' => 'boolean'
+    ];
 
     private const MAX_CLUSTER_DEPTH = 2;
 
@@ -44,6 +54,7 @@ class Cluster extends Model
         if ($this->ancestors()->count() > self::MAX_CLUSTER_DEPTH) {
             throw new ClusterDepthException();
         }
+        $this->cacheUrl();
         return parent::save($options);
     }
 

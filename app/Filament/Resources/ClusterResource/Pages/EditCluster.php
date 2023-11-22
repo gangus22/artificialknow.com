@@ -11,11 +11,6 @@ class EditCluster extends EditRecord
 {
     protected static string $resource = ClusterResource::class;
 
-    protected function handleRecordUpdate(Model $record, array $data): Model
-    {
-        return $record;
-    }
-
     protected function getHeaderActions(): array
     {
         return [

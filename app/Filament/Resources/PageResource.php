@@ -3,6 +3,8 @@
 namespace App\Filament\Resources;
 
 use App\Enums\MetaDataEnum;
+use App\Filament\Actions\CreateFunnelRedirectAction;
+use App\Filament\Actions\RedirectPageAction;
 use App\Filament\Resources\PageResource\Pages;
 use App\Models\Cluster;
 use App\Models\Page;
@@ -14,6 +16,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -81,17 +84,24 @@ class PageResource extends Resource
                     ->boolean(),
                 IconColumn::make('indexed')
                     ->boolean(),
+                IconColumn::make('is_redirected')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-arrows-right-left')
+                    ->trueColor('warning')
+                    ->falseIcon('heroicon-o-x-mark')
+                    ->falseColor('gray')
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    RedirectPageAction::make(),
+                ]),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                CreateFunnelRedirectAction::make(),
             ]);
     }
 

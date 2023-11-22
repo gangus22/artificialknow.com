@@ -2,13 +2,15 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Actions\RedirectClusterAction;
 use App\Filament\Resources\ClusterResource\Pages;
 use App\Models\Cluster;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Columns\BadgeColumn;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -51,13 +53,21 @@ class ClusterResource extends Resource
                     ->description(fn(Cluster $cluster) => $cluster->url),
                 TextColumn::make('breadcrumbs_title'),
                 TextColumn::make('pages_count')
-                    ->counts('pages')
+                    ->counts('pages'),
+                IconColumn::make('is_redirected')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-arrows-right-left')
+                    ->trueColor('warning')
+                    ->falseIcon('heroicon-o-x-mark')
+                    ->falseColor('gray')
             ])
             ->filters([
                 //
             ])
             ->actions([])
-            ->bulkActions([]);
+            ->bulkActions([
+                RedirectClusterAction::make(),
+            ]);
     }
 
     public static function getRelations(): array

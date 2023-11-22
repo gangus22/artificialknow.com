@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\Models\Traits\HasCachedUrls;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -15,9 +16,9 @@ use Illuminate\Support\Carbon;
  * @property int|null $cluster_id
  * @property string $path
  * @property string $title_tag
- * @property string $slug
  * @property string $url
  * @property array $meta
+ * @property bool $is_redirected
  * @property bool $visible
  * @property bool $indexed
  * @property bool $is_splash_page
@@ -28,16 +29,26 @@ use Illuminate\Support\Carbon;
  */
 class Page extends Model
 {
+    use HasFactory;
+    use HasCachedUrls;
+
     protected $casts = [
         'meta' => 'array',
         'indexed' => 'boolean',
         'visible' => 'boolean',
+        'is_redirected' => 'boolean'
     ];
 
     protected $with = [
         'cluster',
         'content',
     ];
+
+    public function save(array $options = []): bool
+    {
+        $this->cacheUrl();
+        return parent::save($options);
+    }
 
     /**
      * @return BelongsTo<Cluster, Page>
@@ -53,5 +64,15 @@ class Page extends Model
     public function content(): HasOne
     {
         return $this->hasOne(Content::class);
+    }
+
+    public function getPrefixParentRelationshipName(): string
+    {
+        return 'cluster';
+    }
+
+    public function getUrlFallback(): string
+    {
+        return 'path';
     }
 }
