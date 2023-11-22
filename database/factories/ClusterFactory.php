@@ -16,7 +16,7 @@ class ClusterFactory extends Factory
     {
         return [
             'slug' => fake()->slug(),
-            'breadcrumbs_title' => fake()->title(),
+            'breadcrumbs_title' => fake()->text(),
             'parent_id' => null,
             'is_redirected' => false,
         ];
