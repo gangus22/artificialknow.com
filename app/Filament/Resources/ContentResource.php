@@ -17,6 +17,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class ContentResource extends Resource
 {
@@ -85,7 +86,10 @@ class ContentResource extends Resource
                                         Block::make('image')
                                             ->schema([
                                                 FileUpload::make('url')
-                                                    ->preserveFilenames()
+                                                    ->getUploadedFileNameForStorageUsing(
+                                                        fn(TemporaryUploadedFile $file): string => str($file->getFilename())
+                                                            ->prepend(str($file->getClientOriginalName())->beforeLast('.')->append('-')->toString()),
+                                                    )
                                                     ->label('Image')
                                                     ->image()
                                                     ->required()
