@@ -28,6 +28,10 @@ class ResolveContent
             return $next($request);
         }
 
+        if (!$page->visible || ($page->content === null && !$page->is_splash_page)) {
+            abort(404);
+        }
+
         app()->instance(Page::class, $page);
 
         if ($page->is_splash_page) {
