@@ -66,7 +66,8 @@ class ClusterResource extends Resource
             ])
             ->actions([])
             ->bulkActions([
-                RedirectClusterAction::make(),
+                RedirectClusterAction::make()
+                    ->visible(fn() => auth()->user()->can('create redirects')),
             ]);
     }
 

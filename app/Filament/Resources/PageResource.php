@@ -97,11 +97,13 @@ class PageResource extends Resource
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\EditAction::make(),
-                    RedirectPageAction::make(),
+                    RedirectPageAction::make()
+                        ->visible(fn() => auth()->user()->can('create redirects')),
                 ]),
             ])
             ->bulkActions([
-                CreateFunnelRedirectAction::make(),
+                CreateFunnelRedirectAction::make()
+                    ->visible(fn() => auth()->user()->can('create redirects')),
             ]);
     }
 
