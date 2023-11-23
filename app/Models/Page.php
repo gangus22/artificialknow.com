@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
+use Spatie\Sitemap\Contracts\Sitemapable;
+use Spatie\Sitemap\Tags\Url;
 
 /**
  * App\Models\Page
@@ -27,7 +29,7 @@ use Illuminate\Support\Carbon;
  * @property-read Cluster|null $cluster
  * @property-read Content|null $content
  */
-class Page extends Model
+class Page extends Model implements Sitemapable
 {
     use HasFactory;
     use HasCachedUrls;
@@ -74,5 +76,12 @@ class Page extends Model
     public function getUrlFallback(): string
     {
         return 'path';
+    }
+
+    public function toSitemapTag(): Url|string|array
+    {
+        return Url::create(url($this->url))
+            ->setLastModificationDate($this->content->updated_at ?? $this->updated_at)
+            ->setChangeFrequency('monthly');
     }
 }
