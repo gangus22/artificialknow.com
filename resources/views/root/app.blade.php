@@ -10,6 +10,9 @@
     <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
+    @if(!$pageFromLaravel->indexed)
+        <meta name="robots" content="noindex">
+    @endif
     {{-- TODO: remove when measurement ready --}}
     <meta name="robots" content="noindex">
     <meta charset="utf-8">
@@ -21,7 +24,7 @@
     <meta property="og:image" content="{{ $metaData->ogImage }}"/>
 
     <title>{{ $pageFromLaravel->title_tag }} | ArtificialKnow</title>
-    
+
     @viteReactRefresh
     @vite('resources/css/tailwind.css')
     @vite('resources/ts/inertia-app.tsx')

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Content
@@ -12,7 +13,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $name
  * @property mixed $article
  * @property int $page_id
- *
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property-read Page $page
  * @property-read Author $author
  */
