@@ -1,5 +1,5 @@
 import React from "react";
 
 export const Image: React.FC<{ url: string; alt: string }> = ({ url, alt }) => (
-    <img alt={alt} src={`/${url}`} />
+    <img className="my-4" alt={alt} src={`/${url}`} />
 );

@@ -32,7 +32,7 @@ class ContentResource extends Resource
                 Select::make('page_id')
                     ->helperText('The page the content should belong to.')
                     ->required()
-                    ->getOptionLabelFromRecordUsing(fn(Page $page) => $page->id . ' - ' . $page->name)
+                    ->getOptionLabelFromRecordUsing(fn(Page $page) => $page->id . ' - ' . $page->url)
                     ->relationship('page')
                     ->columnSpan(2),
                 TextInput::make('name')
