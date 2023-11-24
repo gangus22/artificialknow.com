@@ -20,7 +20,7 @@ class InterlinkingService implements InterlinkingServiceInterface
         }
 
         return $page->cluster->pages
-            ->reject(fn(Page $pageUnderCluster) => $pageUnderCluster->isPillarPage())
+            ->reject(fn(Page $pageUnderCluster) => $pageUnderCluster->isPillarPage() || $pageUnderCluster->content === null)
             ->map(fn(Page $pageUnderCluster) => new InterlinkItemDTO($pageUnderCluster->title_tag, url($pageUnderCluster->url)))
             ->values()
             ->all();
