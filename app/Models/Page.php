@@ -68,6 +68,11 @@ class Page extends Model implements Sitemapable
         return $this->hasOne(Content::class);
     }
 
+    public function isPillarPage(): bool
+    {
+        return $this === $this->cluster->pillarPage;
+    }
+
     public function getPrefixParentRelationshipName(): string
     {
         return 'cluster';
