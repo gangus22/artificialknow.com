@@ -42,6 +42,11 @@ trait HasCachedUrls
             return;
         }
 
+        if ($fallback === null) {
+            $this->{$this->getLocalAttributeToCache()} = $prefixParent->{$this->getUrlAttributeOnParent()};
+            return;
+        }
+
         $urlPrefix = Str::finish($prefixParent->{$this->getUrlAttributeOnParent()}, '/');
         $this->{$this->getLocalAttributeToCache()} = str($fallback)->prepend($urlPrefix)->toString();
     }
