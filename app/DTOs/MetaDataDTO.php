@@ -7,14 +7,15 @@ use Spatie\LaravelData\Data;
 
 class MetaDataDTO extends Data
 {
+    //TODO: default values for ogs
     public function __construct(
-        public readonly string $metaDescription,
+        public readonly string  $metaDescription,
         #[MapInputName('og:title')]
-        public readonly string $ogTitle,
+        public readonly string  $ogTitle,
         #[MapInputName('og:description')]
-        public readonly string $ogDescription,
+        public readonly string  $ogDescription,
         #[MapInputName('og:image')]
-        public readonly string $ogImage,
+        public readonly ?string $ogImage = '',
     )
     {
     }
