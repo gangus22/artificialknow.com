@@ -4,5 +4,9 @@ export const Paragraph: React.FC<{ htmlContent: string }> = ({
     htmlContent,
 }) => (
     // eslint-disable-next-line react/no-danger
-    <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+    <div
+        className="leading-loose"
+        dangerouslySetInnerHTML={{ __html: htmlContent }}
+    />
 );
+0;
