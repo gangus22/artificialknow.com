@@ -2,14 +2,14 @@
 
 namespace App\Contracts;
 
+use App\DTOs\InterlinkItemDTO;
 use App\Models\Page;
-use Illuminate\Support\Collection;
 
 interface InterlinkingServiceInterface
 {
     /**
      * @param Page $page
-     * @return Collection<int, string>
+     * @return array<InterlinkItemDTO>
      */
-    public function getUrlsToInterlink(Page $page): Collection;
+    public function getInterlinkItems(Page $page): array;
 }

@@ -70,7 +70,7 @@ class Page extends Model implements Sitemapable
 
     public function isPillarPage(): bool
     {
-        return $this === $this->cluster->pillarPage;
+        return $this->id === $this->cluster->pillarPage?->id;
     }
 
     public function getPrefixParentRelationshipName(): string

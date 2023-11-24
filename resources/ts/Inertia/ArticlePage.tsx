@@ -9,12 +9,16 @@ import { ChapterRenderer } from "../components/ChapterRenderer/blocks/ChapterRen
 import { Author } from "../models/Author";
 import { ArticleInfoRow } from "../components/ArticleInfoRow/blocks/ArticleInfoRow";
 import { DottedDivider } from "../components/DottedDivider/blocks/DottedDivider";
+import { InterlinkList } from "../components/InterlinkList/blocks/InterlinkList";
+import { BreadcrumbItem } from "../components/Breadcrumbs/types/BreadcrumbItem";
+import { InterlinkItem } from "../components/InterlinkList/types/InterlinkItem";
 
 export const ArticlePage: React.FC<{
     page: Page;
     author: Author;
-    breadcrumbs: Object;
-}> = ({ page, author, breadcrumbs }) => (
+    breadcrumbs: BreadcrumbItem[];
+    interlinkedUrls: InterlinkItem[];
+}> = ({ page, author, breadcrumbs, interlinkedUrls }) => (
     <PageWrapper page={page}>
         <div className="flex gap-x-10">
             <AsideWrapper>
@@ -32,6 +36,7 @@ export const ArticlePage: React.FC<{
                 <ArticleInfoRow />
                 <DottedDivider />
                 <ChapterRenderer chapters={page.content.article} />
+                <InterlinkList interlinks={interlinkedUrls} />
             </ArticleWrapper>
         </div>
     </PageWrapper>
