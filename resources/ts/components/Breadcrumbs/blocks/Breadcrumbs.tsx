@@ -1,13 +1,15 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { BreadcrumbItem } from "../types/BreadcrumbItem";
+import { BreadcrumbListSchemaMarkup } from "./BreadcrumbListSchemaMarkup";
 
 export const Breadcrumbs: React.FC<{
     breadcrumbs: BreadcrumbItem[];
 }> = ({ breadcrumbs }) => (
     <div className="flex w-max items-center gap-x-1 rounded-full px-4 py-2 text-sm bg-secondary-100">
+        <BreadcrumbListSchemaMarkup breadcrumbs={breadcrumbs} />
         {breadcrumbs.map((breadcrumb, index) => (
-            <>
+            <Fragment key={breadcrumb.name}>
                 {index === breadcrumbs.length - 1 ? (
                     <span className="hidden md:inline" key={breadcrumb.url}>
                         {breadcrumb.name}
@@ -24,7 +26,7 @@ export const Breadcrumbs: React.FC<{
                         <ChevronRightIcon className="hidden h-4 w-4 md:block" />
                     </>
                 )}
-            </>
+            </Fragment>
         ))}
     </div>
 );

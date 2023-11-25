@@ -12,6 +12,7 @@ import { DottedDivider } from "../components/DottedDivider/blocks/DottedDivider"
 import { InterlinkList } from "../components/InterlinkList/blocks/InterlinkList";
 import { BreadcrumbItem } from "../components/Breadcrumbs/types/BreadcrumbItem";
 import { InterlinkItem } from "../components/InterlinkList/types/InterlinkItem";
+import { ArticleSchemaMarkup } from "../components/ArticleSchemaMarkup/blocks/ArticleSchemaMarkup";
 
 export const ArticlePage: React.FC<{
     page: Page;
@@ -31,6 +32,7 @@ export const ArticlePage: React.FC<{
                 </div>
             </AsideWrapper>
             <ArticleWrapper author={author}>
+                <ArticleSchemaMarkup />
                 <Breadcrumbs breadcrumbs={breadcrumbs} />
                 <ArticleHeader text={page.title_tag} />
                 <ArticleInfoRow />
