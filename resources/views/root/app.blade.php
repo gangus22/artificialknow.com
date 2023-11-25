@@ -24,6 +24,7 @@
     <meta property="og:image" content="{{ $metaData->ogImage }}"/>
 
     <title>{{ $pageFromLaravel->title_tag }} | ArtificialKnow</title>
+    <link rel="icon" href="{{ url('favicon.png') }}">
 
     @viteReactRefresh
     @vite('resources/css/tailwind.css')
