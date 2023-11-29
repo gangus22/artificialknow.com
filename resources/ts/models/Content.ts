@@ -7,7 +7,6 @@ export type Content = {
 };
 
 export type Chapter = {
-    type: "chapter";
     data: ChapterData;
 };
 
@@ -18,6 +17,7 @@ export type ChapterData = {
 };
 
 export type Component = {
+    id: string;
     type: string;
-    data: Array<any>;
+    data: Array<Object>;
 };

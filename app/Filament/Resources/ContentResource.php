@@ -8,6 +8,7 @@ use App\Models\Content;
 use App\Models\Page;
 use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\Builder\Block;
+use Filament\Forms\Components\Component;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
@@ -17,6 +18,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class ContentResource extends Resource
@@ -59,6 +61,7 @@ class ContentResource extends Resource
                                     ->blocks([
                                         Block::make('heading')
                                             ->schema([
+                                                self::getHiddenUuidField(),
                                                 TextInput::make('text')
                                                     ->label('content')
                                                     ->required(),
@@ -72,6 +75,7 @@ class ContentResource extends Resource
                                             ]),
                                         Block::make('paragraph')
                                             ->schema([
+                                                self::getHiddenUuidField(),
                                                 RichEditor::make('htmlContent')
                                                     ->disableToolbarButtons([
                                                         'h1',
@@ -85,6 +89,7 @@ class ContentResource extends Resource
                                             ]),
                                         Block::make('image')
                                             ->schema([
+                                                self::getHiddenUuidField(),
                                                 FileUpload::make('url')
                                                     ->getUploadedFileNameForStorageUsing(
                                                         fn(TemporaryUploadedFile $file): string => str($file->getFilename())
@@ -138,5 +143,14 @@ class ContentResource extends Resource
             'create' => Pages\CreateContent::route('/create'),
             'edit' => Pages\EditContent::route('/{record}/edit'),
         ];
+    }
+
+    private static function getHiddenUuidField(): Component
+    {
+        return TextInput::make('id')
+            ->uuid()
+            ->hidden()
+            ->required()
+            ->formatStateUsing(fn() => Str::uuid()->toString());
     }
 }

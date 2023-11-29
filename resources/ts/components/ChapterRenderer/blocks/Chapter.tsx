@@ -14,10 +14,11 @@ export const Chapter: React.FC<{ chapterData: ChapterData }> = ({
                 text={chapterData.title}
                 key={chapterData.slug}
             />
-            {chapterData.parts.map((component, key) => {
+            {chapterData.parts.map((component) => {
                 const ComponentFromMap = componentMap[component.type];
-                // eslint-disable-next-line react/no-array-index-key
-                return <ComponentFromMap key={key} {...component.data} />;
+                return (
+                    <ComponentFromMap key={component.id} {...component.data} />
+                );
             })}
         </>
     );
