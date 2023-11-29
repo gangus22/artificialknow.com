@@ -20,9 +20,7 @@ class ResolveContent
         $path = $request->path();
 
         /** @var Page $page */
-        $page = Page::query()
-            ->with('cluster')
-            ->firstWhere('url', '=', $path);
+        $page = Page::query()->firstWhere('url', '=', $path);
 
         if ($page === null) {
             return $next($request);
