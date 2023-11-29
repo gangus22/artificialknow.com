@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Contracts\BreadcrumbsServiceInterface;
-use App\DTOs\BreadcrumbItemDTO;
+use App\DTOs\BreadcrumbsItemDTO;
 use App\Models\Cluster;
 use App\Models\Page;
 use Illuminate\Support\Collection;
@@ -14,14 +14,14 @@ class BreadcrumbsService implements BreadcrumbsServiceInterface
     {
         $breadcrumbs = [];
 
-        $breadcrumbs[] = new BreadcrumbItemDTO('Home', url('/'));
+        $breadcrumbs[] = new BreadcrumbsItemDTO('Home', url('/'));
 
         $page->cluster?->ancestorsAndSelf->reverse()->each(function (Cluster $cluster) use (&$breadcrumbs) {
-            $breadcrumbs[] = new BreadcrumbItemDTO($cluster->breadcrumbs_title, url($cluster->pillarPage?->url ?? url('/')));
+            $breadcrumbs[] = new BreadcrumbsItemDTO($cluster->breadcrumbs_title, url($cluster->pillarPage?->url ?? url('/')));
         });
 
         if (!$page->isPillarPage()) {
-            $breadcrumbs[] = new BreadcrumbItemDTO($page->title_tag, url($page->url));
+            $breadcrumbs[] = new BreadcrumbsItemDTO($page->title_tag, url($page->url));
         }
 
         return $breadcrumbs;

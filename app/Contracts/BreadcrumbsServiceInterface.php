@@ -2,14 +2,14 @@
 
 namespace App\Contracts;
 
-use App\DTOs\BreadcrumbItemDTO;
+use App\DTOs\BreadcrumbsItemDTO;
 use App\Models\Page;
 
 interface BreadcrumbsServiceInterface
 {
     /**
      * @param Page $page
-     * @return array<BreadcrumbItemDTO>
+     * @return array<BreadcrumbsItemDTO>
      */
     public function generateBreadcrumbs(Page $page): array;
 }

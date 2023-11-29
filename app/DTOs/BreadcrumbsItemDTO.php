@@ -4,7 +4,7 @@ namespace App\DTOs;
 
 use Spatie\LaravelData\Data;
 
-class BreadcrumbItemDTO extends Data
+class BreadcrumbsItemDTO extends Data
 {
     public function __construct(
         public readonly string $name,

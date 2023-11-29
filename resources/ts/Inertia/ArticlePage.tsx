@@ -10,14 +10,14 @@ import { Author } from "../models/Author";
 import { ArticleInfoRow } from "../components/ArticleInfoRow/blocks/ArticleInfoRow";
 import { DottedDivider } from "../components/DottedDivider/blocks/DottedDivider";
 import { InterlinkList } from "../components/InterlinkList/blocks/InterlinkList";
-import { BreadcrumbItem } from "../components/Breadcrumbs/types/BreadcrumbItem";
+import { BreadcrumbsItem } from "../components/Breadcrumbs/types/BreadcrumbsItem";
 import { InterlinkItem } from "../components/InterlinkList/types/InterlinkItem";
 import { ArticleSchemaMarkup } from "../components/ArticleSchemaMarkup/blocks/ArticleSchemaMarkup";
 
 export const ArticlePage: React.FC<{
     page: Page;
     author: Author;
-    breadcrumbs: BreadcrumbItem[];
+    breadcrumbs: BreadcrumbsItem[];
     interlinkedUrls: InterlinkItem[];
 }> = ({ page, author, breadcrumbs, interlinkedUrls }) => (
     <PageWrapper page={page}>
