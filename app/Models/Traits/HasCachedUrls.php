@@ -2,12 +2,8 @@
 
 namespace App\Models\Traits;
 
-use App\Models\Cluster;
 use Illuminate\Support\Str;
 
-/**
- * @template T
- */
 trait HasCachedUrls
 {
     public function getPrefixParentRelationshipName(): string
@@ -15,7 +11,7 @@ trait HasCachedUrls
         return 'parentCluster';
     }
 
-    public function getUrlFallback(): string
+    public function getPathForUrl(): string
     {
         return 'slug';
     }
@@ -30,24 +26,26 @@ trait HasCachedUrls
         return 'url';
     }
 
+    /**
+     * @template T
+     */
     public function cacheUrl(): void
     {
         /** @var T|null $prefixParent */
         $prefixParent = $this->{$this->getPrefixParentRelationshipName()};
 
-        $fallback = $this->{$this->getUrlFallback()};
+        $cachedUrlAttribute = $this->getLocalAttributeToCache();
+
+        $path = $this->{$this->getPathForUrl()};
 
         if ($prefixParent === null) {
-            $this->{$this->getLocalAttributeToCache()} = $fallback;
+            $this->{$cachedUrlAttribute} = $path;
             return;
         }
 
-        if ($fallback === null) {
-            $this->{$this->getLocalAttributeToCache()} = $prefixParent->{$this->getUrlAttributeOnParent()};
-            return;
-        }
+        $parentUrl = $prefixParent->{$this->getUrlAttributeOnParent()};
 
-        $urlPrefix = Str::finish($prefixParent->{$this->getUrlAttributeOnParent()}, '/');
-        $this->{$this->getLocalAttributeToCache()} = str($fallback)->prepend($urlPrefix)->toString();
+        $urlPrefix = Str::finish($parentUrl, '/');
+        $this->{$cachedUrlAttribute} = str($path)->prepend($urlPrefix)->rtrim('/')->toString();
     }
 }

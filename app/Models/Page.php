@@ -78,7 +78,7 @@ class Page extends Model implements Sitemapable
         return 'cluster';
     }
 
-    public function getUrlFallback(): string
+    public function getPathForUrl(): string
     {
         return 'path';
     }
