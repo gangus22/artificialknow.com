@@ -4,31 +4,67 @@ namespace App\Filament\Actions;
 
 use App\Contracts\RedirectServiceInterface;
 use App\Enums\RedirectType;
+use App\Filament\Actions\Base\CustomFilamentBulkAction;
+use App\Filament\Actions\Traits\HasFilamentErrorMessages;
 use App\Models\Page;
 use Exception;
-use Filament\Actions\StaticAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Wizard\Step;
 use Filament\Notifications\Notification;
-use Filament\Tables\Actions\BulkAction;
 use Illuminate\Database\Eloquent\Collection;
 
-class CreateFunnelRedirectAction implements CustomActionInterface
+class CreateFunnelRedirectAction extends CustomFilamentBulkAction
 {
-    public static function make(): StaticAction
+    use HasFilamentErrorMessages;
+
+    public static function getActionName(): string
     {
-        return BulkAction::make('funnelPageRedirect')
-            ->label('Funnel Page Redirect')
-            ->icon('heroicon-o-funnel')
-            ->steps(self::getSteps())
-            ->action(self::getActionCallback());
+        return 'funnelRedirectPages';
     }
 
-    /**
-     * @return array<Step>
-     */
-    private static function getSteps(): array
+    public static function handle(Collection $records, array $data): void
+    {
+        $toPageId = data_get($data, 'toPageId');
+        $redirectType = RedirectType::from(data_get($data, 'pageRedirectType'));
+
+        if ($toPageId === null) {
+            self::sendErrorMessage('Destination Page ID not found!');
+            return;
+        }
+
+        /** @var Page|null $toPage */
+        $toPage = Page::query()->find($toPageId);
+
+        if ($toPage === null) {
+            self::sendErrorMessage('Destination Page not found!');
+            return;
+        }
+
+        $fromPageIds = $records->pluck('id');
+
+        if ($fromPageIds->contains($toPage->id)) {
+            self::sendErrorMessage('Cannot redirect to same Page!');
+            return;
+        }
+
+        /** @var RedirectServiceInterface $redirectService */
+        $redirectService = app()->make(RedirectServiceInterface::class);
+
+        try {
+            $records->each(fn(Page $page) => $redirectService->redirectPage($page, $toPage, $redirectType));
+        } catch (Exception $exception) {
+            self::sendErrorMessage($exception->getMessage());
+            return;
+        }
+
+        Notification::make()
+            ->title('Pages successfully redirected.')
+            ->success()
+            ->send();
+    }
+
+    public static function steps(): array
     {
         return [
             Step::make('To')
@@ -59,56 +95,5 @@ class CreateFunnelRedirectAction implements CustomActionInterface
                         ->readOnly()
                 ])
         ];
-    }
-
-    private static function getActionCallback(): callable
-    {
-        return function (Collection $records, array $data) {
-            $toPageId = data_get($data, 'toPageId');
-            $redirectType = RedirectType::from(data_get($data, 'pageRedirectType'));
-
-            if ($toPageId === null) {
-                self::sendErrorMessage('Destination Page ID not found!');
-                return;
-            }
-
-            /** @var Page|null $toPage */
-            $toPage = Page::query()->find($toPageId);
-
-            if ($toPage === null) {
-                self::sendErrorMessage('Destination Page not found!');
-                return;
-            }
-
-            $fromPageIds = $records->pluck('id');
-
-            if ($fromPageIds->contains($toPage->id)) {
-                self::sendErrorMessage('Cannot redirect to same Page!');
-                return;
-            }
-
-            /** @var RedirectServiceInterface $redirectService */
-            $redirectService = app()->make(RedirectServiceInterface::class);
-
-            try {
-                $records->each(fn(Page $page) => $redirectService->redirectPage($page, $toPage, $redirectType));
-            } catch (Exception $exception) {
-                self::sendErrorMessage($exception->getMessage());
-                return;
-            }
-
-            Notification::make()
-                ->title('Pages successfully redirected.')
-                ->success()
-                ->send();
-        };
-    }
-
-    private static function sendErrorMessage(string $message): void
-    {
-        Notification::make()
-            ->title($message)
-            ->danger()
-            ->send();
     }
 }

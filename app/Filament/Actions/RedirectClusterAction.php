@@ -4,29 +4,67 @@ namespace App\Filament\Actions;
 
 use App\Contracts\RedirectServiceInterface;
 use App\Enums\RedirectType;
+use App\Filament\Actions\Base\CustomFilamentBulkAction;
+use App\Filament\Actions\Traits\HasFilamentErrorMessages;
 use App\Models\Cluster;
 use Exception;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Wizard\Step;
 use Filament\Notifications\Notification;
-use Filament\Tables\Actions\BulkAction;
 use Illuminate\Database\Eloquent\Collection;
-use Filament\Actions\StaticAction;
 
-class RedirectClusterAction implements CustomActionInterface
+class RedirectClusterAction extends CustomFilamentBulkAction
 {
-    public static function make(): StaticAction
+    use HasFilamentErrorMessages;
+
+    public static function getActionName(): string
     {
-        return BulkAction::make('redirectCluster')
-            ->steps(self::getSteps())
-            ->action(self::getActionCallback());
+        return 'redirectCluster';
     }
 
-    /**
-     * @return array<Step>
-     */
-    private static function getSteps(): array
+    public static function handle(Collection $records, array $data): void
+    {
+        $toClusterId = data_get($data, 'toClusterId');
+        $redirectType = RedirectType::from(data_get($data, 'clusterRedirectType'));
+
+        if ($toClusterId === null) {
+            self::sendErrorMessage('Destination Cluster ID not found!');
+            return;
+        }
+
+        /** @var Cluster|null $toCluster */
+        $toCluster = Cluster::query()->find($toClusterId);
+
+        if ($toCluster === null) {
+            self::sendErrorMessage('Destination Cluster not found!');
+            return;
+        }
+
+        $fromClusterIds = $records->pluck('id');
+
+        if ($fromClusterIds->contains($toCluster->id)) {
+            self::sendErrorMessage('Cannot redirect to same Cluster!');
+            return;
+        }
+
+        /** @var RedirectServiceInterface $redirectService */
+        $redirectService = app()->make(RedirectServiceInterface::class);
+
+        try {
+            $records->each(fn(Cluster $cluster) => $redirectService->redirectCluster($cluster, $toCluster, $redirectType));
+        } catch (Exception $exception) {
+            self::sendErrorMessage($exception->getMessage());
+            return;
+        }
+
+        Notification::make()
+            ->title('Cluster(s) successfully redirected.')
+            ->success()
+            ->send();
+    }
+
+    public static function steps(): array
     {
         return [
             Step::make('To')
@@ -57,56 +95,5 @@ class RedirectClusterAction implements CustomActionInterface
                         ->readOnly()
                 ])
         ];
-    }
-
-    private static function getActionCallback(): callable
-    {
-        return function (Collection $records, array $data) {
-            $toClusterId = data_get($data, 'toClusterId');
-            $redirectType = RedirectType::from(data_get($data, 'clusterRedirectType'));
-
-            if ($toClusterId === null) {
-                self::sendErrorMessage('Destination Cluster ID not found!');
-                return;
-            }
-
-            /** @var Cluster|null $toCluster */
-            $toCluster = Cluster::query()->find($toClusterId);
-
-            if ($toCluster === null) {
-                self::sendErrorMessage('Destination Cluster not found!');
-                return;
-            }
-
-            $fromClusterIds = $records->pluck('id');
-
-            if ($fromClusterIds->contains($toCluster->id)) {
-                self::sendErrorMessage('Cannot redirect to same Cluster!');
-                return;
-            }
-
-            /** @var RedirectServiceInterface $redirectService */
-            $redirectService = app()->make(RedirectServiceInterface::class);
-
-            try {
-                $records->each(fn(Cluster $cluster) => $redirectService->redirectCluster($cluster, $toCluster, $redirectType));
-            } catch (Exception $exception) {
-                self::sendErrorMessage($exception->getMessage());
-                return;
-            }
-
-            Notification::make()
-                ->title('Cluster(s) successfully redirected.')
-                ->success()
-                ->send();
-        };
-    }
-
-    private static function sendErrorMessage(string $message): void
-    {
-        Notification::make()
-            ->title($message)
-            ->danger()
-            ->send();
     }
 }
