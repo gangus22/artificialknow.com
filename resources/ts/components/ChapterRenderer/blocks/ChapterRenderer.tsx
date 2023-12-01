@@ -6,9 +6,8 @@ export const ChapterRenderer: React.FC<{ chapters: ChapterType[] }> = ({
     chapters,
 }) => (
     <>
-        {chapters.map((chapter, key) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <Chapter chapterData={chapter.data} key={key} />
+        {chapters.map((chapter) => (
+            <Chapter chapterData={chapter.data} key={chapter.data.slug} />
         ))}
     </>
 );
