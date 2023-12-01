@@ -25,7 +25,7 @@ export const AboutUsPage: React.FC = () => (
                     with SSR from scratch.
                 </div>
             </div>
-            <QuestionMarkCircleIcon className="hidden h-96 w-96 stroke-primary-300 md:block" />
+            <QuestionMarkCircleIcon className="hidden h-96 w-96 stroke-primary-200 md:block" />
         </div>
     </PageWrapper>
 );
