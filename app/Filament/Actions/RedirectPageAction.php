@@ -5,7 +5,7 @@ namespace App\Filament\Actions;
 use App\Contracts\RedirectServiceInterface;
 use App\Enums\RedirectType;
 use App\Filament\Actions\Base\CustomFilamentAction;
-use App\Filament\Actions\Traits\HasFilamentErrorMessages;
+use App\Filament\Actions\Traits\SendsFilamentNotifications;
 use App\Models\Cluster;
 use App\Models\Page;
 use Exception;
@@ -13,13 +13,17 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Wizard\Step;
-use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Model;
 
 class RedirectPageAction extends CustomFilamentAction
 {
-    use HasFilamentErrorMessages;
-    
+    use SendsFilamentNotifications;
+
+    public static function getActionName(): string
+    {
+        return 'redirectPage';
+    }
+
     public static function handle(Model|Page $record, array $data): void
     {
         $toPageClusterId = data_get($data, 'toPageClusterId');
@@ -27,7 +31,7 @@ class RedirectPageAction extends CustomFilamentAction
         $redirectType = RedirectType::from(data_get($data, 'pageRedirectType'));
 
         if ($toPageClusterId === null || $toPagePath === null) {
-            self::sendErrorMessage('Valid destination Page data not found!');
+            self::sendErrorNotification('Valid destination Page data not found!');
             return;
         }
 
@@ -35,7 +39,7 @@ class RedirectPageAction extends CustomFilamentAction
         $cluster = Cluster::query()->find($toPageClusterId);
 
         if ($cluster === null) {
-            self::sendErrorMessage('Destination Page\'s Cluster not found!');
+            self::sendErrorNotification('Destination Page\'s Cluster not found!');
             return;
         }
 
@@ -47,7 +51,7 @@ class RedirectPageAction extends CustomFilamentAction
         $doesDestinationUrlAlreadyExist = Page::query()->where('url', '=', $destinationPage->url)->exists();
 
         if ($doesDestinationUrlAlreadyExist) {
-            self::sendErrorMessage('The path entered already exists under the Cluster! Please use existing Page redirection.');
+            self::sendErrorNotification('The path entered already exists under the Cluster! Please use existing Page redirection.');
             return;
         }
 
@@ -57,19 +61,11 @@ class RedirectPageAction extends CustomFilamentAction
         try {
             $redirectService->redirectPage($record, $destinationPage, $redirectType);
         } catch (Exception $exception) {
-            self::sendErrorMessage($exception->getMessage());
+            self::sendErrorNotification($exception->getMessage());
             return;
         }
 
-        Notification::make()
-            ->title('Page successfully redirected to specified URL.')
-            ->success()
-            ->send();
-    }
-
-    public static function getActionName(): string
-    {
-        return 'redirectPage';
+        self::sendSuccessNotification('Page successfully redirected to specified URL.');
     }
 
     public static function steps(): array

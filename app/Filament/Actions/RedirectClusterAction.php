@@ -5,18 +5,17 @@ namespace App\Filament\Actions;
 use App\Contracts\RedirectServiceInterface;
 use App\Enums\RedirectType;
 use App\Filament\Actions\Base\CustomFilamentBulkAction;
-use App\Filament\Actions\Traits\HasFilamentErrorMessages;
+use App\Filament\Actions\Traits\SendsFilamentNotifications;
 use App\Models\Cluster;
 use Exception;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Wizard\Step;
-use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Collection;
 
 class RedirectClusterAction extends CustomFilamentBulkAction
 {
-    use HasFilamentErrorMessages;
+    use SendsFilamentNotifications;
 
     public static function getActionName(): string
     {
@@ -29,7 +28,7 @@ class RedirectClusterAction extends CustomFilamentBulkAction
         $redirectType = RedirectType::from(data_get($data, 'clusterRedirectType'));
 
         if ($toClusterId === null) {
-            self::sendErrorMessage('Destination Cluster ID not found!');
+            self::sendErrorNotification('Destination Cluster ID not found!');
             return;
         }
 
@@ -37,14 +36,14 @@ class RedirectClusterAction extends CustomFilamentBulkAction
         $toCluster = Cluster::query()->find($toClusterId);
 
         if ($toCluster === null) {
-            self::sendErrorMessage('Destination Cluster not found!');
+            self::sendErrorNotification('Destination Cluster not found!');
             return;
         }
 
         $fromClusterIds = $records->pluck('id');
 
         if ($fromClusterIds->contains($toCluster->id)) {
-            self::sendErrorMessage('Cannot redirect to same Cluster!');
+            self::sendErrorNotification('Cannot redirect to same Cluster!');
             return;
         }
 
@@ -54,14 +53,12 @@ class RedirectClusterAction extends CustomFilamentBulkAction
         try {
             $records->each(fn(Cluster $cluster) => $redirectService->redirectCluster($cluster, $toCluster, $redirectType));
         } catch (Exception $exception) {
-            self::sendErrorMessage($exception->getMessage());
+            self::sendErrorNotification($exception->getMessage());
             return;
         }
 
-        Notification::make()
-            ->title('Cluster(s) successfully redirected.')
-            ->success()
-            ->send();
+        self::sendSuccessNotification('Cluster(s) successfully redirected.');
+
     }
 
     public static function steps(): array

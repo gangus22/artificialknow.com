@@ -5,18 +5,17 @@ namespace App\Filament\Actions;
 use App\Contracts\RedirectServiceInterface;
 use App\Enums\RedirectType;
 use App\Filament\Actions\Base\CustomFilamentBulkAction;
-use App\Filament\Actions\Traits\HasFilamentErrorMessages;
+use App\Filament\Actions\Traits\SendsFilamentNotifications;
 use App\Models\Page;
 use Exception;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Wizard\Step;
-use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Collection;
 
 class CreateFunnelRedirectAction extends CustomFilamentBulkAction
 {
-    use HasFilamentErrorMessages;
+    use SendsFilamentNotifications;
 
     public static function getActionName(): string
     {
@@ -29,7 +28,7 @@ class CreateFunnelRedirectAction extends CustomFilamentBulkAction
         $redirectType = RedirectType::from(data_get($data, 'pageRedirectType'));
 
         if ($toPageId === null) {
-            self::sendErrorMessage('Destination Page ID not found!');
+            self::sendErrorNotification('Destination Page ID not found!');
             return;
         }
 
@@ -37,14 +36,14 @@ class CreateFunnelRedirectAction extends CustomFilamentBulkAction
         $toPage = Page::query()->find($toPageId);
 
         if ($toPage === null) {
-            self::sendErrorMessage('Destination Page not found!');
+            self::sendErrorNotification('Destination Page not found!');
             return;
         }
 
         $fromPageIds = $records->pluck('id');
 
         if ($fromPageIds->contains($toPage->id)) {
-            self::sendErrorMessage('Cannot redirect to same Page!');
+            self::sendErrorNotification('Cannot redirect to same Page!');
             return;
         }
 
@@ -54,14 +53,11 @@ class CreateFunnelRedirectAction extends CustomFilamentBulkAction
         try {
             $records->each(fn(Page $page) => $redirectService->redirectPage($page, $toPage, $redirectType));
         } catch (Exception $exception) {
-            self::sendErrorMessage($exception->getMessage());
+            self::sendErrorNotification($exception->getMessage());
             return;
         }
 
-        Notification::make()
-            ->title('Pages successfully redirected.')
-            ->success()
-            ->send();
+        self::sendSuccessNotification('Pages successfully redirected.');
     }
 
     public static function steps(): array
