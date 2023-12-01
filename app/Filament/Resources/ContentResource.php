@@ -2,15 +2,12 @@
 
 namespace App\Filament\Resources;
 
+use App\Contracts\ContentServiceInterface;
 use App\Filament\Resources\ContentResource\Pages;
 use App\Models\Author;
 use App\Models\Content;
 use App\Models\Page;
-use Filament\Forms\Components\Builder;
-use Filament\Forms\Components\Builder\Block;
 use Filament\Forms\Components\Component;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -19,7 +16,6 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class ContentResource extends Resource
 {
@@ -29,6 +25,9 @@ class ContentResource extends Resource
 
     public static function form(Form $form): Form
     {
+        /** @var ContentServiceInterface $contentService */
+        $contentService = app()->make(ContentServiceInterface::class);
+
         return $form
             ->schema([
                 Select::make('page_id')
@@ -46,66 +45,7 @@ class ContentResource extends Resource
                     ->required()
                     ->getOptionLabelFromRecordUsing(fn(Author $author) => $author->name)
                     ->relationship('author'),
-                Builder::make('article')
-                    ->required()
-                    ->columnSpan(2)
-                    ->blocks([
-                        Block::make('chapter')
-                            ->schema([
-                                TextInput::make('title')
-                                    ->required(),
-                                TextInput::make('slug')
-                                    ->required(),
-                                Builder::make('parts')
-                                    ->columnSpan(2)
-                                    ->blocks([
-                                        Block::make('heading')
-                                            ->schema([
-                                                self::getHiddenUuidField(),
-                                                TextInput::make('text')
-                                                    ->label('content')
-                                                    ->required(),
-                                                Select::make('level')
-                                                    ->options([
-                                                        3 => 'h3',
-                                                        4 => 'h4',
-                                                    ])
-                                                    ->mutateDehydratedStateUsing(fn($state) => (int)$state)
-                                                    ->required(),
-                                            ]),
-                                        Block::make('paragraph')
-                                            ->schema([
-                                                self::getHiddenUuidField(),
-                                                RichEditor::make('htmlContent')
-                                                    ->disableToolbarButtons([
-                                                        'h1',
-                                                        'h2',
-                                                        'h3',
-                                                        'attachFiles',
-                                                        'codeBlock'
-                                                    ])
-                                                    ->label('Paragraph')
-                                                    ->required(),
-                                            ]),
-                                        Block::make('image')
-                                            ->schema([
-                                                self::getHiddenUuidField(),
-                                                FileUpload::make('url')
-                                                    ->getUploadedFileNameForStorageUsing(
-                                                        fn(TemporaryUploadedFile $file): string => str($file->getFilename())
-                                                            ->prepend(str($file->getClientOriginalName())->beforeLast('.')->append('-')->toString()),
-                                                    )
-                                                    ->label('Image')
-                                                    ->image()
-                                                    ->required()
-                                                    ->disk('public'),
-                                                TextInput::make('alt')
-                                                    ->label('Alt text')
-                                                    ->required(),
-                                            ]),
-                                    ])
-                            ])
-                    ])
+                $contentService->getFilamentContentBuilder('article'),
             ]);
     }
 
@@ -143,14 +83,5 @@ class ContentResource extends Resource
             'create' => Pages\CreateContent::route('/create'),
             'edit' => Pages\EditContent::route('/{record}/edit'),
         ];
-    }
-
-    private static function getHiddenUuidField(): Component
-    {
-        return TextInput::make('id')
-            ->uuid()
-            ->hidden()
-            ->required()
-            ->formatStateUsing(fn() => Str::uuid()->toString());
     }
 }

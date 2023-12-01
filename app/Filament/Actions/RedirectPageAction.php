@@ -4,31 +4,76 @@ namespace App\Filament\Actions;
 
 use App\Contracts\RedirectServiceInterface;
 use App\Enums\RedirectType;
+use App\Filament\Actions\Base\CustomFilamentAction;
+use App\Filament\Actions\Traits\SendsFilamentNotifications;
 use App\Models\Cluster;
 use App\Models\Page;
 use Exception;
-use Filament\Tables\Actions\Action;
-use Filament\Actions\StaticAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Wizard\Step;
-use Filament\Notifications\Notification;
+use Illuminate\Database\Eloquent\Model;
 
-class RedirectPageAction implements CustomActionInterface
+class RedirectPageAction extends CustomFilamentAction
 {
-    public static function make(): StaticAction
+    use SendsFilamentNotifications;
+
+    public static function getActionName(): string
     {
-        return Action::make('redirectPage')
-            ->icon('heroicon-o-arrows-right-left')
-            ->steps(self::getSteps())
-            ->action(self::getActionCallback());
+        return 'redirectPage';
     }
 
-    /**
-     * @return array<Step>
-     */
-    private static function getSteps(): array
+    static function canRun(): bool
+    {
+        return auth()->user()->can('create redirects');
+    }
+
+    public static function handle(Model|Page $record, array $data): void
+    {
+        $toPageClusterId = data_get($data, 'toPageClusterId');
+        $toPagePath = data_get($data, 'toPagePath');
+        $redirectType = RedirectType::from(data_get($data, 'pageRedirectType'));
+
+        if ($toPageClusterId === null || $toPagePath === null) {
+            self::sendErrorNotification('Valid destination Page data not found!');
+            return;
+        }
+
+        /** @var Cluster|null $cluster */
+        $cluster = Cluster::query()->find($toPageClusterId);
+
+        if ($cluster === null) {
+            self::sendErrorNotification('Destination Page\'s Cluster not found!');
+            return;
+        }
+
+        $destinationPage = $record->replicate();
+        $destinationPage->cluster()->associate($cluster);
+        $destinationPage->path = $toPagePath;
+        $destinationPage->cacheUrl();
+
+        $doesDestinationUrlAlreadyExist = Page::query()->where('url', '=', $destinationPage->url)->exists();
+
+        if ($doesDestinationUrlAlreadyExist) {
+            self::sendErrorNotification('The path entered already exists under the Cluster! Please use existing Page redirection.');
+            return;
+        }
+
+        /** @var RedirectServiceInterface $redirectService */
+        $redirectService = app()->make(RedirectServiceInterface::class);
+
+        try {
+            $redirectService->redirectPage($record, $destinationPage, $redirectType);
+        } catch (Exception $exception) {
+            self::sendErrorNotification($exception->getMessage());
+            return;
+        }
+
+        self::sendSuccessNotification('Page successfully redirected to specified URL.');
+    }
+
+    public static function steps(): array
     {
         return [
             Step::make('To')
@@ -64,62 +109,5 @@ class RedirectPageAction implements CustomActionInterface
                         ->readOnly()
                 ])
         ];
-    }
-
-    private static function getActionCallback(): callable
-    {
-        return function (Page $record, array $data) {
-            $toPageClusterId = data_get($data, 'toPageClusterId');
-            $toPagePath = data_get($data, 'toPagePath');
-            $redirectType = RedirectType::from(data_get($data, 'pageRedirectType'));
-
-            if ($toPageClusterId === null || $toPagePath === null) {
-                self::sendErrorMessage('Valid destination Page data not found!');
-                return;
-            }
-
-            /** @var Cluster|null $cluster */
-            $cluster = Cluster::query()->find($toPageClusterId);
-
-            if ($cluster === null) {
-                self::sendErrorMessage('Destination Page\'s Cluster not found!');
-                return;
-            }
-
-            $destinationPage = $record->replicate();
-            $destinationPage->cluster()->associate($cluster);
-            $destinationPage->path = $toPagePath;
-            $destinationPage->cacheUrl();
-
-            $doesDestinationUrlAlreadyExist = Page::query()->where('url', '=', $destinationPage->url)->exists();
-
-            if ($doesDestinationUrlAlreadyExist) {
-                self::sendErrorMessage('The path entered already exists under the Cluster! Please use existing Page redirection.');
-                return;
-            }
-
-            /** @var RedirectServiceInterface $redirectService */
-            $redirectService = app()->make(RedirectServiceInterface::class);
-
-            try {
-                $redirectService->redirectPage($record, $destinationPage, $redirectType);
-            } catch (Exception $exception) {
-                self::sendErrorMessage($exception->getMessage());
-                return;
-            }
-
-            Notification::make()
-                ->title('Page successfully redirected to specified URL.')
-                ->success()
-                ->send();
-        };
-    }
-
-    private static function sendErrorMessage(string $message): void
-    {
-        Notification::make()
-            ->title($message)
-            ->danger()
-            ->send();
     }
 }
