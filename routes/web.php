@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AboutUsPageController;
 use App\Http\Controllers\MainPageController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,3 +17,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', MainPageController::class)
     ->name('main');
+
+Route::get('/about-us', AboutUsPageController::class)
+    ->name('aboutUs');
