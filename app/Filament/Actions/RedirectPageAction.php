@@ -24,6 +24,11 @@ class RedirectPageAction extends CustomFilamentAction
         return 'redirectPage';
     }
 
+    static function canRun(): bool
+    {
+        return auth()->user()->can('create redirects');
+    }
+
     public static function handle(Model|Page $record, array $data): void
     {
         $toPageClusterId = data_get($data, 'toPageClusterId');

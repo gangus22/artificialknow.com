@@ -12,6 +12,7 @@ abstract class CustomFilamentAction implements CustomFilamentActionInterface
     final public static function make(): StaticAction
     {
         return Action::make(static::getActionName())
+            ->visible(static::canRun())
             ->steps(static::steps())
             ->action(Closure::fromCallable([static::class, 'handle']));
     }

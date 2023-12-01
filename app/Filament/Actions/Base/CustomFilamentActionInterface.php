@@ -11,6 +11,8 @@ interface CustomFilamentActionInterface
 
     static function getActionName(): string;
 
+    static function canRun(): bool;
+
     /** @return array<Step> */
     static function steps(): array;
 }

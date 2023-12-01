@@ -22,6 +22,11 @@ class RedirectClusterAction extends CustomFilamentBulkAction
         return 'redirectCluster';
     }
 
+    static function canRun(): bool
+    {
+        return auth()->user()->can('create redirects');
+    }
+
     public static function handle(Collection $records, array $data): void
     {
         $toClusterId = data_get($data, 'toClusterId');

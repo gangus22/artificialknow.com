@@ -22,6 +22,11 @@ class CreateFunnelRedirectAction extends CustomFilamentBulkAction
         return 'funnelRedirectPages';
     }
 
+    static function canRun(): bool
+    {
+        return auth()->user()->can('create redirects');
+    }
+
     public static function handle(Collection $records, array $data): void
     {
         $toPageId = data_get($data, 'toPageId');
