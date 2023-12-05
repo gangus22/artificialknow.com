@@ -13,6 +13,7 @@ import { InterlinkList } from "../components/InterlinkList/blocks/InterlinkList"
 import { BreadcrumbsItem } from "../components/Breadcrumbs/types/BreadcrumbsItem";
 import { InterlinkItem } from "../components/InterlinkList/types/InterlinkItem";
 import { ArticleSchemaMarkup } from "../components/ArticleSchemaMarkup/blocks/ArticleSchemaMarkup";
+import { TableOfContents } from "../components/TableOfContents/blocks/TableOfContents";
 
 export const ArticlePage: React.FC<{
     page: Page;
@@ -23,13 +24,7 @@ export const ArticlePage: React.FC<{
     <PageWrapper page={page}>
         <div className="flex gap-x-10">
             <AsideWrapper>
-                <div className="sticky top-32 h-max rounded-lg p-5 bg-primary-100">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Fugit, iure, voluptate. Accusantium distinctio fugit magnam
-                    nobis tenetur? Ad aliquid amet commodi consectetur
-                    cupiditate dolorem modi soluta tempora tempore temporibus.
-                    Doloremque?
-                </div>
+                <TableOfContents chapters={page.content.article} />
             </AsideWrapper>
             <ArticleWrapper author={author}>
                 <ArticleSchemaMarkup />

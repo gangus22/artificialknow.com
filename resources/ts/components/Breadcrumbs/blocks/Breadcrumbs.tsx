@@ -6,7 +6,7 @@ import { BreadcrumbListSchemaMarkup } from "./BreadcrumbListSchemaMarkup";
 export const Breadcrumbs: React.FC<{
     breadcrumbs: BreadcrumbsItem[];
 }> = ({ breadcrumbs }) => (
-    <div className="flex w-max items-center gap-x-1 rounded-full px-4 py-2 text-sm bg-secondary-100">
+    <div className="flex w-max items-center gap-x-1 rounded-full px-4 py-2 text-sm bg-secondary-100 md:text-base">
         <BreadcrumbListSchemaMarkup breadcrumbs={breadcrumbs} />
         {breadcrumbs.map((breadcrumb, index) => (
             <Fragment key={breadcrumb.name}>

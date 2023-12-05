@@ -1,4 +1,5 @@
 import React from "react";
+import { Element } from "react-scroll";
 import { Heading } from "../../Heading/blocks/Heading";
 import { ChapterData } from "../../../models/Content";
 import { useComponentMap } from "../hooks/useComponentMap";
@@ -9,6 +10,7 @@ export const Chapter: React.FC<{ chapterData: ChapterData }> = ({
     const { componentMap } = useComponentMap();
     return (
         <>
+            <Element name={chapterData.slug} />
             <Heading
                 level={2}
                 text={chapterData.title}
