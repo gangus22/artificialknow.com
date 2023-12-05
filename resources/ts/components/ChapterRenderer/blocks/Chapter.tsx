@@ -19,7 +19,10 @@ export const Chapter: React.FC<{ chapterData: ChapterData }> = ({
             {chapterData.parts.map((component) => {
                 const ComponentFromMap = componentMap[component.type];
                 return (
-                    <ComponentFromMap key={component.id} {...component.data} />
+                    <ComponentFromMap
+                        key={component.data.id}
+                        {...component.data}
+                    />
                 );
             })}
         </>
