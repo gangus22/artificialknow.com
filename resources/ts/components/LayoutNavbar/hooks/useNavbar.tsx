@@ -4,6 +4,9 @@ export const useNavbar = () => {
     const [openedIndex, setOpenedIndex] = useState<number | undefined>(
         undefined
     );
+
+    const [isMobileNavOpened, setIsMobileNavOpened] = useState<boolean>(false);
+
     const toggleOpened = (index: number) => {
         if (openedIndex === index) {
             setOpenedIndex(undefined);
@@ -11,6 +14,21 @@ export const useNavbar = () => {
             setOpenedIndex(index);
         }
     };
+
+    const toggleMobileNav = () => {
+        setIsMobileNavOpened((prevState) => !prevState);
+    };
+
     const clearOpened = () => setOpenedIndex(undefined);
-    return { openedIndex, toggleOpened, clearOpened };
+
+    const clearMobileNav = () => setIsMobileNavOpened(false);
+
+    return {
+        openedIndex,
+        isMobileNavOpened,
+        toggleOpened,
+        toggleMobileNav,
+        clearOpened,
+        clearMobileNav,
+    };
 };

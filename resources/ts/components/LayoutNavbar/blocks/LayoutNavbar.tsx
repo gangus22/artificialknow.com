@@ -1,38 +1,66 @@
 import React from "react";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import { NavbarItem } from "../types/NavbarItem";
-import { NavbarDropdownItem } from "./NavbarDropdownItem";
+import { NavbarButton } from "./NavbarButton";
 import { NavbarScreenOverlay } from "./NavbarScreenOverlay";
 import { useNavbar } from "../hooks/useNavbar";
+import { SiteLogo } from "./SiteLogo";
+import { NavbarList } from "./NavbarList";
+import { MobileNavbarList } from "./MobileNavbarList";
 
-const testData: NavbarItem[] = [
+const navbarData: NavbarItem[] = [
     {
         name: "AI Tools",
-        urls: ["Click this for some cool stuff!", "More cool stuff here!"],
+        urls: [
+            {
+                name: "ChatGPT Guides",
+                url: "https://artificialknow.com/ai-tools/chatgpt",
+            },
+            {
+                name: "DeepL Guides",
+                url: "https://artificialknow.com/ai-tools/deepl",
+            },
+            {
+                name: "Midjourney Guides",
+                url: "https://artificialknow.com/ai-tools/midjourney",
+            },
+        ],
     },
     {
         name: "Tutorials",
-        urls: ["Tutorials galore", "One two three four"],
-    },
-    {
-        name: "About Us",
-        urls: ["something"],
+        urls: [
+            {
+                name: "Mastering content generation with ChatGPT",
+                url: "https://artificialknow.com/ai-tools/mastering-content-generation",
+            },
+            {
+                name: "Effortless translation with DeepL: A quick tutorial",
+                url: "https://artificialknow.com/ai-tools/easy-translation-with-deepl",
+            },
+            {
+                name: "Unleashing visual artistry with Midjourney",
+                url: "https://artificialknow.com/ai-tools/midjourney/creative-image-generation",
+            },
+        ],
     },
 ];
 
-// TODO: add button component
-// TODO: make a service that returns the navbar layout
-// TODO: click outside logic with a package
 export const LayoutNavbar: React.FC = () => {
-    const { openedIndex, toggleOpened, clearOpened } = useNavbar();
+    const {
+        openedIndex,
+        isMobileNavOpened,
+        toggleOpened,
+        toggleMobileNav,
+        clearOpened,
+        clearMobileNav,
+    } = useNavbar();
     return (
         <div className="sticky top-0 z-50 bg-white">
-            <div className="container mx-auto flex items-center justify-between p-2 py-5">
-                <div>Logo Placeholder</div>
-                <Bars3Icon className="h-10 w-10 md:hidden" />
+            <div className="container relative mx-auto flex h-24 items-center justify-between p-2 py-5">
+                <SiteLogo />
                 <div className="hidden items-center gap-x-8 py-2 font-sans text-lg font-bold md:flex">
-                    {testData.map((item, index) => (
-                        <NavbarDropdownItem
+                    {navbarData.map((item, index) => (
+                        <NavbarButton
                             key={item.name}
                             item={item}
                             isOpen={openedIndex === index}
@@ -41,8 +69,25 @@ export const LayoutNavbar: React.FC = () => {
                     ))}
                 </div>
                 {openedIndex !== undefined && (
-                    <NavbarScreenOverlay onClickHandler={clearOpened} />
+                    <>
+                        <NavbarList selectedUrlList={navbarData[openedIndex]} />
+                        <NavbarScreenOverlay onClickHandler={clearOpened} />
+                    </>
                 )}
+                <div className="md:hidden">
+                    <Bars3Icon
+                        className="h-10 w-10 md:hidden"
+                        onClick={toggleMobileNav}
+                    />
+                    {isMobileNavOpened && (
+                        <>
+                            <MobileNavbarList items={navbarData} />
+                            <NavbarScreenOverlay
+                                onClickHandler={clearMobileNav}
+                            />
+                        </>
+                    )}
+                </div>
             </div>
         </div>
     );

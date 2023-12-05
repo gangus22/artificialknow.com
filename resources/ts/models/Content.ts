@@ -17,7 +17,6 @@ export type ChapterData = {
 };
 
 export type Component = {
-    id: string;
     type: string;
-    data: Array<Object>;
+    data: { id: string & any };
 };
