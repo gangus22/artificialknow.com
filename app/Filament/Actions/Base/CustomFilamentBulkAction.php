@@ -5,6 +5,7 @@ namespace App\Filament\Actions\Base;
 use Closure;
 use Filament\Tables\Actions\BulkAction;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 abstract class CustomFilamentBulkAction implements CustomFilamentActionInterface
 {
@@ -16,5 +17,6 @@ abstract class CustomFilamentBulkAction implements CustomFilamentActionInterface
             ->action(Closure::fromCallable([static::class, 'handle']));
     }
 
+    /** @param Collection<Model> $records */
     public static abstract function handle(Collection $records, array $data): void;
 }
