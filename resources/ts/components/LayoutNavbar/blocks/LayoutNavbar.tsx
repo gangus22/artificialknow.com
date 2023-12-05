@@ -28,7 +28,12 @@ export const LayoutNavbar: React.FC = () => {
     return (
         <div className="sticky top-0 z-50 bg-white">
             <div className="container mx-auto flex items-center justify-between p-2 py-5">
-                <div>Logo Placeholder</div>
+                <a href="/">
+                    <div className="text-2xl font-black">
+                        <span>Artificial</span>
+                        <span className="text-primary-500">Know</span>
+                    </div>
+                </a>
                 <Bars3Icon className="h-10 w-10 md:hidden" />
                 <div className="hidden items-center gap-x-8 py-2 font-sans text-lg font-bold md:flex">
                     {testData.map((item, index) => (

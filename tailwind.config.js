@@ -17,6 +17,7 @@ module.exports = {
             cyan: colors.cyan,
             white: colors.white,
             red: colors.red,
+            transparent: colors.transparent,
         },
         fontFamily: {
             domine: ["Domine", "sans-serif"],
