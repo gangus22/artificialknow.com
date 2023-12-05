@@ -7,7 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { PageWrapper } from "../components/PageWrapper/blocks/PageWrapper";
 import { MainPageCard } from "../components/MainPageCard/blocks/MainPageCard";
-import { MainPageListitem } from "../components/MainPageListItem/blocks/MainPageListitem";
+import { GenericListItem } from "../components/MainPageListItem/blocks/GenericListItem";
 
 export const MainPage: React.FC = () => (
     <PageWrapper>
@@ -51,15 +51,15 @@ export const MainPage: React.FC = () => (
         </div>
         <div className="h-full w-full text-2xl font-semibold leading-loose flex justify-center bg-slate-50 rounded-lg p-4">
             <ul className="list-disc list-inside">
-                <MainPageListitem
+                <GenericListItem
                     href="/ai-tools/chatgpt"
                     text="Our ChatGPT Guides"
                 />
-                <MainPageListitem
+                <GenericListItem
                     href="/ai-tools/deepl"
                     text="Our DeepL Guides"
                 />
-                <MainPageListitem
+                <GenericListItem
                     href="/ai-tools/midjourney"
                     text="Our Midjourney Guides"
                 />
