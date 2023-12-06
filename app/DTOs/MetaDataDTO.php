@@ -15,7 +15,7 @@ class MetaDataDTO extends Data
         #[MapInputName('og:description')]
         public readonly string  $ogDescription,
         #[MapInputName('og:image')]
-        public readonly ?string $ogImage = '',
+        public readonly ?string $ogImage = '/',
     )
     {
     }
