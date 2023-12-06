@@ -17,5 +17,3 @@ ArtificialKnow is written in the RILT stack, as in it's made with **React, Inert
 
 **Live URL:** http://artificialknow.com/
 
-⚠️ This project is work-in-progress.
-
