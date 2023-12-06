@@ -7,7 +7,6 @@ use Spatie\LaravelData\Data;
 
 class MetaDataDTO extends Data
 {
-    //TODO: default values for ogs
     public function __construct(
         public readonly string  $metaDescription,
         #[MapInputName('og:title')]

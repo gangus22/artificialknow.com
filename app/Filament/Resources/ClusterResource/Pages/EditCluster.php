@@ -13,9 +13,6 @@ class EditCluster extends EditRecord
 
     protected function getHeaderActions(): array
     {
-        return [
-            // TODO: remove deletion of Clusters. Tell users to use redirects instead.
-            Actions\DeleteAction::make(),
-        ];
+        return [];
     }
 }
