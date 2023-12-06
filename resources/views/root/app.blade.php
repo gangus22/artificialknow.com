@@ -20,6 +20,7 @@
     <meta property="og:title" content="{{ $metaData->ogTitle  }}"/>
     <meta property="og:description" content="{{ $metaData->ogDescription }}"/>
     <meta property="og:image" content="{{ $metaData->ogImage }}"/>
+    <meta property="og:url" content="{{ url($pageFromLaravel->url) }}">
 
     <title>{{ $pageFromLaravel->title_tag }} | ArtificialKnow</title>
     <link rel="icon" href="{{ url('favicon.png') }}">

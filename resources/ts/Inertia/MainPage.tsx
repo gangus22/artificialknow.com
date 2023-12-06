@@ -12,12 +12,12 @@ import { GenericListItem } from "../components/MainPageListItem/blocks/GenericLi
 export const MainPage: React.FC = () => (
     <PageWrapper>
         <div className="mb-5 flex h-full items-center justify-around rounded-xl bg-slate-50 p-2 md:h-96">
-            <div className="text-center text-4xl font-black leading-snug md:text-left md:text-6xl">
+            <h1 className="text-center text-4xl font-black leading-snug md:text-left md:text-6xl">
                 Your one-stop shop for <br />
                 <span className="bg-gradient-to-br bg-clip-text text-transparent from-primary-600 via-primary-300 to-primary-500">
                     AI knowledge!
                 </span>
-            </div>
+            </h1>
             <div className="hidden md:block">
                 <CpuChipIcon className="h-80 w-80 rotate-3 stroke-primary-400" />
             </div>
