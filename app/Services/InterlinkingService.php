@@ -19,8 +19,8 @@ class InterlinkingService implements InterlinkingServiceInterface
             return [];
         }
 
-        return $page->cluster->pages
-            ->reject(fn(Page $pageUnderCluster) => $pageUnderCluster->content === null)
+        return $page->cluster->childrenAndSelf->pluck('pages')->flatten()
+            ->reject(fn(Page $pageUnderCluster) => $pageUnderCluster->id === $page->id || $pageUnderCluster->content === null)
             ->map(fn(Page $pageUnderCluster) => new InterlinkItemDTO($pageUnderCluster->title_tag, url($pageUnderCluster->url)))
             ->values()
             ->all();
