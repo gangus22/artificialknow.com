@@ -31,11 +31,11 @@ const navbarData: NavbarItem[] = [
         urls: [
             {
                 name: "Mastering content generation with ChatGPT",
-                url: "https://artificialknow.com/ai-tools/mastering-content-generation",
+                url: "https://artificialknow.com/ai-tools/chatgpt/mastering-content-generation",
             },
             {
                 name: "Effortless translation with DeepL: A quick tutorial",
-                url: "https://artificialknow.com/ai-tools/easy-translation-with-deepl",
+                url: "https://artificialknow.com/ai-tools/deepl/easy-translation-with-deepl",
             },
             {
                 name: "Unleashing visual artistry with Midjourney",
